@@ -1,3 +1,28 @@
 <resources>
+    <!--<general>-->
     <string name="app_name">F-Project</string>
+
+    <!--<teams>-->
+    <string name="team_dortmund">Dortmund</string>
+    <string name="team_bayern">Bayern</string>
+
+    <!--<scenes>-->
+    <string name="scene_beginning">It\'s starting! %1s vs %2s</string>
+    <string name="scene_pass">Pass durchs Mittelfeld</string>
+    <!--<scenes_attacking>-->
+    <string name="scene_shot">Schuss aus kurzer Entfernung!</string>
+    <string name="scene_goal_success">TOR!</string>
+    <string name="scene_goal_fail">Knapp daneben!!</string>
+    <!--<scenes_defending>-->
+    <string name="scene_defending">Ball gerät in den Strafraum …</string>
+    <string name="scene_block">Sauber vom Verteidiger abgeräumt</string>
+    <string name="scene_gk_block">Ball parriert mit einer hervorragender Glanzleistung des Torwarts!</string>
+    <string name="scene_got_goal">Ball ist im Netz, Tor für die Gegner …</string>
+    <string name="scene_ending">Spiel ist vorbei!</string>
+
+    <!--<actions>-->
+    <string name="action_penalty">Elfmeter!</string>
+    <string name="action_free_kick">Freistoß</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
 </resources>
