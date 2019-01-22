@@ -2,6 +2,7 @@ package com.android.f_project
 
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -9,8 +10,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.f_project.datamodel.Scene_model
 import com.android.f_project.datamodel.Status_model
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,6 +29,7 @@ class MainActivity : AppCompatActivity() {
     var gameStatus: Status_model = Status_model.Midfield
     private lateinit var adapter: ListAdapter
     private lateinit var rv: RecyclerView
+    private lateinit var mDocRef: DocumentReference
 /*
         TODO -Implementing Spielverlauf ✔
         TODO -Implementing 0..90 ✔
@@ -54,6 +59,7 @@ class MainActivity : AppCompatActivity() {
         adapter = ListAdapter(contentList)
         rv.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv.adapter = adapter
+
         startGame()
         delayMainStart(adapter, rv)
     }
@@ -224,6 +230,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun endGame() {
         addSceneSpecial(getString(R.string.scene_ending))
+        saveStats()
+    }
+
+    private fun saveStats() {
+        val datasave = HashMap<String, String>()
+
+        datasave.put("User", "Me")
+        datasave.put("Dortmund", counter_home.text.toString())
+        datasave.put("Bayern", counter_away.text.toString())
+        mDocRef = FirebaseFirestore.getInstance().document("Score/HighScores")
+        mDocRef.set(datasave as Map<String, Any>).addOnSuccessListener {
+            Log.d("FirebaseManager", "Upload Successful")
+        }.addOnFailureListener {
+            Log.d("FirebaseManager", "Klappt net")
+        }
     }
 
     private fun setViewText(view: TextView, text: String) {
