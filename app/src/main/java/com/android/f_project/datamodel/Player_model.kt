@@ -1,11 +1,10 @@
 package com.android.f_project.datamodel
 
 data class Player_model(val id: String?,
-                        val firstName: String?,
-                        val lastName: String?,
+                        val name: String?,
+                        val age:String?,
                         val team: String?,
                         val nationality:String?,
-                        val number: Int?,
+                        val jerseyNumber: String?,
                         val position: String?,
-                        val stats: List<String>,
-                        val stats2: Map<String, Int>?)
+                        val overall:String?)

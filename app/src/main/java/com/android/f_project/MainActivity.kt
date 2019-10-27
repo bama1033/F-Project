@@ -1,5 +1,6 @@
 package com.android.f_project
 
+import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -8,6 +9,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.f_project.datamodel.Player_model
 import com.android.f_project.datamodel.Scene_model
 import com.android.f_project.datamodel.Status_model
 import com.google.firebase.firestore.DocumentReference
@@ -18,8 +20,6 @@ import kotlin.collections.HashMap
 
 
 class MainActivity : AppCompatActivity() {
-    private var home_team = "home_team"
-    private var away_team = "away_team"
     private var scoreHome = 0
     private var scoreAway = 0
     private var gameTimer = 0
@@ -43,11 +43,13 @@ class MainActivity : AppCompatActivity() {
         TODO -Mainmenu(welcomescreen, modeselect, highscore, exit)
         TODO -Gamemenu
 
-        TODO -adding Teams  ---> API?
-        TODO -adding Players ---> API?
+        TODO -adding Teams  ---> API? --> SQL ✔
+        TODO -adding Players ---> API? --> SQL ✔
         TODO -Animationen für actions
-        TODO -Firebase-Anbindung um Highscore zu speichern
+        TODO -Firebase-Anbindung um Highscore zu speichern ✔
         TODO -Gamemodes (Create a Team_model, Online Competitive)
+
+        TODO-NEXT Create Auftsellung Sturm mittelfeld Def (Sturm vs Def, MF vs MF, Attacker vs GK)
  */
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -60,8 +62,96 @@ class MainActivity : AppCompatActivity() {
         rv.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv.adapter = adapter
 
+
+        val myDatabase = MyDbHelper(this).readableDatabase
+
+//      myDatabase.rawQuery("SELECT * FROM my_awesome_table")
+        var playaList = mutableListOf<Player_model>()
+//        AsyncTask.execute {
+//            val cursor = myDatabase.rawQuery(
+//                "SELECT _id,Name,Age,Nationality,\"Jersey Number\",Position,Overall FROM data\n" +
+//                        "WHERE Club=?;", arrayOf("Borussia Dortmund")
+//            )
+//            if (cursor.moveToFirst()) {
+//                while (!cursor.isAfterLast()) {
+//                    //your code to implement
+//                    val id = cursor.getString(0)
+//                    val name = cursor.getString(1)
+//                    val age = cursor.getString(2)
+//                    val nationality = cursor.getString(3)
+//                    val overall = cursor.getString(4)
+//                    val position = cursor.getString(5)
+//                    val jerseyNumber = cursor.getString(6)
+//                    val player =
+//                        Player_model(id, name, age, "Borussia Dortmund", nationality, overall, position, jerseyNumber)
+//                    playaList.add(player)
+//                    cursor.moveToNext()
+//                }
+//            }
+//            cursor.close()
+//
+////            val x=myDatabase.rawQuery("SELECT Age FROM data WHERE name = ?;", arrayOf("De Gea"))
+////            val age=x.getColumnIndexOrThrow("Age")
+//            val actualage: String
+////            if (x.moveToFirst())
+////                actualage = x.getString(3)
+//            // Prevent a crash if there is no data for this name
+////            else
+//            actualage = "not"
+//
+////            val actualage=x.getString(3)
+////            val c = 0
+//        }
+        sqlconnections()
         startGame()
         delayMainStart(adapter, rv)
+    }
+
+    private fun sqlconnections() {
+        val myDatabase = MyDbHelper(this).readableDatabase
+
+        var playaList = mutableListOf<Player_model>()
+        AsyncTask.execute {
+            val cursor = myDatabase.rawQuery(
+                "SELECT _id,Name,Age,Nationality,\"Jersey Number\",Position,Overall FROM data\n" +
+                        "WHERE Club=?;", arrayOf("Borussia Dortmund")
+            )
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast) {
+                    //your code to implement
+                    val id = cursor.getString(0)
+                    val name = cursor.getString(1)
+                    val age = cursor.getString(2)
+                    val nationality = cursor.getString(3)
+                    val overall = cursor.getString(4)
+                    val position = cursor.getString(5)
+                    val jerseyNumber = cursor.getString(6)
+                    val player =
+                        Player_model(
+                            id,
+                            name,
+                            age,
+                            "Borussia Dortmund",
+                            nationality,
+                            overall,
+                            position,
+                            jerseyNumber
+                        )
+                    playaList.add(player)
+                    cursor.moveToNext()
+                }
+            }
+            cursor.close()
+
+            val x = myDatabase.rawQuery("SELECT Age FROM data WHERE name = ?;", arrayOf("De Gea"))
+//            val age=x.getColumnIndexOrThrow("Age")
+            val actualage: String
+//            if (x.moveToFirst())
+//                actualage = x.getString(3)
+            // Prevent a crash if there is no data for this name
+//            else
+//            val actualage=x.getString(3)
+        }
     }
 
     private fun setTeams(team_name_home: String, team_name_two: String) {
@@ -207,12 +297,17 @@ class MainActivity : AppCompatActivity() {
         updateAdapter()
     }
 
-    private fun shuffle(): Int {
-        return (1..10).shuffled().first()
+    private fun updateTime() {
+        if (gameTimer <= 90)
+            game_clock.text = gameTimer.toString()
+        else {
+            val newValue = convertNinetyPlusTime()
+            game_clock.text = "90+$newValue"
+        }
     }
 
-    private fun updateTime() {
-        game_clock.text = gameTimer.toString()
+    private fun convertNinetyPlusTime(): Int {
+        return gameTimer.minus(90)
 
     }
 
@@ -225,7 +320,6 @@ class MainActivity : AppCompatActivity() {
                 getString(R.string.team_bayern)
             )
         )
-
     }
 
     private fun endGame() {
