@@ -4,7 +4,7 @@ import org.junit.Test
 
 import org.junit.Assert.*
 
-class MainActivityTest {
+class GameActivityTest {
 
     @Test
     fun getGameStatus() {

@@ -1,35 +1,43 @@
-package com.android.f_project
+package com.android.f_project.activitys
 
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.f_project.ListAdapter
+import com.android.f_project.MyDbHelper
+import com.android.f_project.R
 import com.android.f_project.datamodel.Player_model
 import com.android.f_project.datamodel.Scene_model
 import com.android.f_project.datamodel.Status_model
+import com.android.f_project.datamodel.Team_model
+import com.android.f_project.shuffle
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main.*
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
 
 
-class MainActivity : AppCompatActivity() {
+class GameActivity : AppCompatActivity() {
     private var scoreHome = 0
     private var scoreAway = 0
     private var gameTimer = 0
     private val contentList = ArrayList<Scene_model>()
     private var timeToken = 0
     private var gameOverToken = false
-    var gameStatus: Status_model = Status_model.Midfield
+    private var gameStatus: Status_model = Status_model.Midfield
     private lateinit var adapter: ListAdapter
     private lateinit var rv: RecyclerView
     private lateinit var mDocRef: DocumentReference
+
 /*
         TODO -Implementing Spielverlauf ✔
         TODO -Implementing 0..90 ✔
@@ -40,8 +48,7 @@ class MainActivity : AppCompatActivity() {
         TODO -Buttons mit Actions versehen
 
         TODO -Teamselector UI ✔
-        TODO -Mainmenu(welcomescreen, modeselect, highscore, exit)
-        TODO -Gamemenu
+        TODO -Mainmenu(welcomescreen, modeselect, highscore, exit) ✔
 
         TODO -adding Teams  ---> API? --> SQL ✔
         TODO -adding Players ---> API? --> SQL ✔
@@ -49,62 +56,60 @@ class MainActivity : AppCompatActivity() {
         TODO -Firebase-Anbindung um Highscore zu speichern ✔
         TODO -Gamemodes (Create a Team_model, Online Competitive)
 
+        pass shoot midfield attack defense
+        event,action,followup --> scene each of this?=listitem?
+        strategie,auswechslung,taktik(verteidiger nach vorne)
+        Strategie-->HalbZeit und bei verlangerung
+        Auswechslung -->immer
+        Taktik-->immer? bei Standardsituationen wenn condition(condition wäre rückstand?)
+
         TODO-NEXT Create Auftsellung Sturm mittelfeld Def (Sturm vs Def, MF vs MF, Attacker vs GK)
  */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setTeams(getString(R.string.team_dortmund), getString(R.string.team_bayern))
+
+        val selectedTeam = intent.getParcelableExtra<Team_model>("selectedTeam")
+        val selectedTeam2 = intent.getParcelableExtra<Team_model>("selectedTeam2")
+        setTeams(
+            selectedTeam,
+            selectedTeam2
+        )
         rv = findViewById(R.id.game_course)
 
+//        val bundle = intent.getBundleExtra("selected_person")
+//        var team  = bundle.getParcelable("selectedTeam") as Team_model
+
+//        selectedTeam= intent.getParcelableExtra("selectedTeam") as Team_model
+
         adapter = ListAdapter(contentList)
+
+        interaction_one.setOnClickListener {
+            interactionOne()
+        }
+        interaction_two.setOnClickListener {
+            interactionTwo()
+        }
         rv.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv.adapter = adapter
 
 
         val myDatabase = MyDbHelper(this).readableDatabase
 
-//      myDatabase.rawQuery("SELECT * FROM my_awesome_table")
         var playaList = mutableListOf<Player_model>()
-//        AsyncTask.execute {
-//            val cursor = myDatabase.rawQuery(
-//                "SELECT _id,Name,Age,Nationality,\"Jersey Number\",Position,Overall FROM data\n" +
-//                        "WHERE Club=?;", arrayOf("Borussia Dortmund")
-//            )
-//            if (cursor.moveToFirst()) {
-//                while (!cursor.isAfterLast()) {
-//                    //your code to implement
-//                    val id = cursor.getString(0)
-//                    val name = cursor.getString(1)
-//                    val age = cursor.getString(2)
-//                    val nationality = cursor.getString(3)
-//                    val overall = cursor.getString(4)
-//                    val position = cursor.getString(5)
-//                    val jerseyNumber = cursor.getString(6)
-//                    val player =
-//                        Player_model(id, name, age, "Borussia Dortmund", nationality, overall, position, jerseyNumber)
-//                    playaList.add(player)
-//                    cursor.moveToNext()
-//                }
-//            }
-//            cursor.close()
-//
-////            val x=myDatabase.rawQuery("SELECT Age FROM data WHERE name = ?;", arrayOf("De Gea"))
-////            val age=x.getColumnIndexOrThrow("Age")
-//            val actualage: String
-////            if (x.moveToFirst())
-////                actualage = x.getString(3)
-//            // Prevent a crash if there is no data for this name
-////            else
-//            actualage = "not"
-//
-////            val actualage=x.getString(3)
-////            val c = 0
-//        }
         sqlconnections()
         startGame()
         delayMainStart(adapter, rv)
+
+    }
+
+    private fun interactionTwo() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    private fun interactionOne() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private fun sqlconnections() {
@@ -154,15 +159,15 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setTeams(team_name_home: String, team_name_two: String) {
-        setViewText(team_home, team_name_home)
-        setViewText(team_away, team_name_two)
-        setImage(image_home, R.drawable.borussia_dortmund)
-        setImage(image_away, R.drawable.bayern_muenchen)
+    private fun setTeams(team_one: Team_model, team_two: Team_model) {
+        setViewText(team_home, team_one.name)
+        setViewText(team_away, team_two.name)
+        setImage(image_home, team_one.logo_res)
+        setImage(image_away, team_two.logo_res)
     }
 
-    private fun setImage(view: ImageView, text: Int) {
-        view.setImageResource(text)
+    private fun setImage(view: ImageView, text: Int?) {
+        text?.let { view.setImageResource(it) }
     }
 
     private fun updateScore(team: String) {
@@ -188,9 +193,6 @@ class MainActivity : AppCompatActivity() {
                 endGame()
             }
         }
-
-        //pass shoot midfield attack defense
-        //event,action,followup --> scene each of this?=listitem?
     }
 
     private fun createTime(): Boolean {
@@ -218,13 +220,13 @@ class MainActivity : AppCompatActivity() {
         when (timer) {
             in 88..90 -> {
                 gameTimer = 90
-                gameOverToken = true
+                this.gameOverToken = true
                 return false
 
             }
             in 91..96 -> {
                 gameTimer = 93
-                gameOverToken = true
+                this.gameOverToken = true
                 return false
             }
             else -> {
@@ -247,7 +249,7 @@ class MainActivity : AppCompatActivity() {
         val dice = shuffle()
         when (gameStatus) {
             Status_model.Midfield -> {
-                content = getString(R.string.scene_pass)
+                content = getString(R.string.scene_pass1)
                 when (dice) {
                     in 1..5 -> {
                         gameStatus = Status_model.Defense
@@ -259,32 +261,32 @@ class MainActivity : AppCompatActivity() {
 
             }
             Status_model.Attack -> {
-                content = getString(R.string.scene_shot)
+                content = getString(R.string.scene_shot1)
                 when (shuffle()) {
                     in 1..5 -> {
-                        content = content + " " + getString(R.string.scene_goal_success)
+                        content = content + " " + getString(R.string.scene_goal_success1)
                         updateScore("home")
                     }
                     in 6..10 -> {
-                        content = content + " " + getString(R.string.scene_goal_fail)
+                        content = content + " " + getString(R.string.scene_goal_fail1)
                     }
                 }
                 gameStatus = Status_model.Midfield
             }
             Status_model.Defense -> {
-                content = getString(R.string.scene_defending)
+                content = getString(R.string.scene_defending1)
                 when (shuffle()) {
                     in 1..5 -> {
-                        content = content + " " + getString(R.string.scene_got_goal)
+                        content = content + " " + getString(R.string.scene_opponent_goal1)
                         updateScore("away")
                     }
                     in 6..10 -> {
                         when (shuffle()) {
                             in 1..5 -> {
-                                content = content + " " + getString(R.string.scene_gk_block)
+                                content = content + " " + getString(R.string.scene_gk_block1)
                             }
                             in 6..10 -> {
-                                content = content + " " + getString(R.string.scene_block)
+                                content = content + " " + getString(R.string.scene_defender_block1)
                             }
                         }
                     }
@@ -316,32 +318,38 @@ class MainActivity : AppCompatActivity() {
         addSceneSpecial(
             getString(
                 R.string.scene_beginning,
-                getString(R.string.team_dortmund),
-                getString(R.string.team_bayern)
+                getString(R.string.team_borussia_dortmund),
+                getString(R.string.team_bayern_muenchen)
             )
         )
     }
 
     private fun endGame() {
         addSceneSpecial(getString(R.string.scene_ending))
+        interaction_one.visibility=View.VISIBLE
+        interaction_two.visibility=View.VISIBLE
+//        updateAdapter()
         saveStats()
     }
 
     private fun saveStats() {
-        val datasave = HashMap<String, String>()
+        val dataSave = HashMap<String, String>()
+        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        val currentDate = sdf.format(Date())
 
-        datasave.put("User", "Me")
-        datasave.put("Dortmund", counter_home.text.toString())
-        datasave.put("Bayern", counter_away.text.toString())
+        dataSave["User"] = "Me"
+        dataSave["Date"] = currentDate.toString()
+        dataSave["Dortmund"] = counter_home.text.toString()
+        dataSave["Bayern"] = counter_away.text.toString()
         mDocRef = FirebaseFirestore.getInstance().document("Score/HighScores")
-        mDocRef.set(datasave as Map<String, Any>).addOnSuccessListener {
+        mDocRef.set(dataSave as Map<String, Any>).addOnSuccessListener {
             Log.d("FirebaseManager", "Upload Successful")
         }.addOnFailureListener {
             Log.d("FirebaseManager", "Klappt net")
         }
     }
 
-    private fun setViewText(view: TextView, text: String) {
+    private fun setViewText(view: TextView, text: String?) {
         view.text = text
     }
 
@@ -359,7 +367,7 @@ class MainActivity : AppCompatActivity() {
 //                    val color = arrayOf(ColorDrawable(Color.WHITE), ColorDrawable(Color.RED))
 //                    val trans = TransitionDrawable(color)
 //                    //This will work also on old devices. The latest API says you have to use setBackground instead.
-//                    button_one.setBackgroundDrawable(trans)
+//                    interaction_one.setBackgroundDrawable(trans)
 //                    trans.startTransition(5000)
                     delayMainStart(adapter, rv)
                 }

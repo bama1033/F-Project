@@ -1,28 +1,40 @@
 <resources>
     <!--<general>-->
     <string name="app_name">F-Project</string>
-
+    <string name="title_activity_main_menu">MainMenu</string>
+    <string name="start_game">Start Game</string>
+    <string name="highscore">Highscore</string>
+    <string name="quit">Quit</string>
+    <string name="f_project">F-Project</string>
     <!--<teams>-->
-    <string name="team_dortmund">Dortmund</string>
-    <string name="team_bayern">Bayern</string>
-
+    <string name="team_borussia_dortmund">Borussia Dortmund</string>
+    <string name="team_bayern_muenchen">FC Bayern München</string>
+    <string name="team_liverpool">Liverpool</string>
+    <string name="team_manchester_city">Manchester City</string>
+    <string name="team_paris">Paris Saint Germain</string>
+    <string name="team_real_madrid">Real Madrid</string>
     <!--<scenes>-->
     <string name="scene_beginning">It\'s starting! %1s vs %2s</string>
-    <string name="scene_pass">Pass durchs Mittelfeld</string>
-    <!--<scenes_attacking>-->
-    <string name="scene_shot">Schuss aus kurzer Entfernung!</string>
-    <string name="scene_goal_success">TOR!</string>
-    <string name="scene_goal_fail">Knapp daneben!!</string>
-    <!--<scenes_defending>-->
-    <string name="scene_defending">Ball gerät in den Strafraum …</string>
-    <string name="scene_block">Sauber vom Verteidiger abgeräumt</string>
-    <string name="scene_gk_block">Ball parriert mit einer hervorragender Glanzleistung des Torwarts!</string>
-    <string name="scene_got_goal">Ball ist im Netz, Tor für die Gegner …</string>
     <string name="scene_ending">Spiel ist vorbei!</string>
-
+    <!--<scenes_attacking>-->
+    <string name="scene_shot1">Schuss aus kurzer Entfernung!</string>
+    <string name="scene_pass1">Pass durchs Mittelfeld</string>
+    <string name="scene_goal_success1">TOR!</string>
+    <string name="scene_goal_fail1">Knapp daneben!!</string>
+    <!--<scenes_defending>-->
+    <string name="scene_defending1">Ball gerät in den Strafraum …</string>
+    <string name="scene_defender_block1">Sauber vom Verteidiger abgeräumt</string>
+    <string name="scene_gk_block1">Ball wurde mit einer hervorragenden Glanzleistung des Torwarts pariert!</string>
+    <string name="scene_opponent_goal1">Ball ist im Netz, Tor für die Gegner …</string>
     <!--<actions>-->
     <string name="action_penalty">Elfmeter!</string>
     <string name="action_free_kick">Freistoß</string>
-    <string name="title_activity_main2">Main2Activity</string>
+    <!--<miscellaneous>-->
+    <string name="team_name">Teamname</string>
+    <string name="league_name">Leaguename</string>
+    <string name="select">Select Teams</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="matchzusammenfassung">Matchzusammenfassung</string>
 
 </resources>
