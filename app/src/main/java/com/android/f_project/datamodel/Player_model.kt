@@ -13,4 +13,4 @@ data class Player_model(
     val jerseyNumber: String?,
     val position: String?,
     val overall: String?
-) :Parcelable
+) : Parcelable

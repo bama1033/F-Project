@@ -61,10 +61,10 @@
             android:text="@string/team_name"
             android:textAlignment="center"
             android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="@id/next_button_team"
             app:layout_constraintEnd_toStartOf="@id/next_button_team"
             app:layout_constraintStart_toEndOf="@id/previous_button_team"
-            app:layout_constraintTop_toTopOf="@id/next_button_team"
-            app:layout_constraintBottom_toBottomOf="@id/next_button_team" />
+            app:layout_constraintTop_toTopOf="@id/next_button_team" />
 
     <ImageButton
             android:id="@+id/next_button_team"
@@ -175,10 +175,10 @@
             android:text="@string/team_name"
             android:textAlignment="center"
             android:textSize="24sp"
-            app:layout_constraintTop_toTopOf="@id/next_button_team2"
             app:layout_constraintBottom_toBottomOf="@id/next_button_team2"
             app:layout_constraintEnd_toStartOf="@id/next_button_team2"
-            app:layout_constraintStart_toEndOf="@id/previous_button_team2" />
+            app:layout_constraintStart_toEndOf="@id/previous_button_team2"
+            app:layout_constraintTop_toTopOf="@id/next_button_team2" />
 
     <ImageButton
             android:id="@+id/next_button_team2"

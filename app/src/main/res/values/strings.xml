@@ -18,9 +18,15 @@
     <string name="scene_ending">Spiel ist vorbei!</string>
     <!--<scenes_attacking>-->
     <string name="scene_shot1">Schuss aus kurzer Entfernung!</string>
+    <string name="scene_shot2">Schuss aus einem spitzen Winkel!</string>
+    <string name="scene_shot3">Weiter Schuss aus der Distanz!</string>
     <string name="scene_pass1">Pass durchs Mittelfeld</string>
+    <string name="scene_pass2">Langer Pass in die Spitze</string>
+    <string name="scene_pass3">Flanke nach vorne</string>
     <string name="scene_goal_success1">TOR!</string>
+    <string name="scene_goal_success2">Ball ist im Netz!</string>
     <string name="scene_goal_fail1">Knapp daneben!!</string>
+    <string name="scene_goal_fail2">Weit am Kasten vorbei!!</string>
     <!--<scenes_defending>-->
     <string name="scene_defending1">Ball gerät in den Strafraum …</string>
     <string name="scene_defender_block1">Sauber vom Verteidiger abgeräumt</string>

@@ -7,7 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper
 import java.io.File
 import java.io.FileOutputStream
 
-class MyDbHelper(val context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+class MyDbHelper(val context: Context) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     private val preferences: SharedPreferences = context.getSharedPreferences(
         "${context.packageName}.database_versions",

@@ -1,5 +1,6 @@
 package com.android.f_project.activitys
 
+import android.graphics.drawable.Animatable
 import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
@@ -100,8 +101,19 @@ class GameActivity : AppCompatActivity() {
         var playaList = mutableListOf<Player_model>()
         sqlconnections()
         startGame()
+        animateClock()
         delayMainStart(adapter, rv)
 
+    }
+
+    private fun animateClock() {
+        for (drawable in anima.compoundDrawables) {
+            if (drawable is Animatable) {
+                (drawable as Animatable).stop()
+                (drawable as Animatable).start()
+            }
+            //http://blog.sqisland.com/2014/10/first-look-at-animated-vector-drawable.html
+        }
     }
 
     private fun interactionTwo() {
@@ -245,6 +257,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun addScene(special: String = "special") {
+        animateClock()
         lateinit var content: String
         val dice = shuffle()
         when (gameStatus) {
@@ -261,7 +274,7 @@ class GameActivity : AppCompatActivity() {
 
             }
             Status_model.Attack -> {
-                content = getString(R.string.scene_shot1)
+                content = getString(getStringText())
                 when (shuffle()) {
                     in 1..5 -> {
                         content = content + " " + getString(R.string.scene_goal_success1)
@@ -299,6 +312,15 @@ class GameActivity : AppCompatActivity() {
         updateAdapter()
     }
 
+    private fun getStringText(): Int {
+        val list4: MutableList<Int> = ArrayList()
+        list4.add(R.string.scene_shot1)
+        list4.add(R.string.scene_shot2)
+        list4.add(R.string.scene_shot3)
+        return list4.random()
+//        return R.string.scene_shot + "1"
+    }
+
     private fun updateTime() {
         if (gameTimer <= 90)
             game_clock.text = gameTimer.toString()
@@ -326,8 +348,8 @@ class GameActivity : AppCompatActivity() {
 
     private fun endGame() {
         addSceneSpecial(getString(R.string.scene_ending))
-        interaction_one.visibility=View.VISIBLE
-        interaction_two.visibility=View.VISIBLE
+        interaction_one.visibility = View.VISIBLE
+        interaction_two.visibility = View.VISIBLE
 //        updateAdapter()
         saveStats()
     }
