@@ -20,7 +20,7 @@ class MainMenuActivity : AppCompatActivity() {
         setContentView(com.android.f_project.R.layout.activity_main_menu)
 
         button_start.setOnClickListener {
-            startGame()
+            selectTeams()
         }
         button_scores.setOnClickListener {
             showHighscore()
@@ -30,7 +30,7 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
-    private fun startGame() {
+    private fun selectTeams() {
         this.startActivity(Intent(this, SelectTeamActivity::class.java))
     }
 

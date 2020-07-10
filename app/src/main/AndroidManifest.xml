@@ -27,13 +27,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activitys.SelectTeamActivity" />
-        <activity android:name=".activitys.GameActivity">
+        <activity
+                android:name=".activitys.SelectTeamActivity"
+                android:parentActivityName=".activitys.MainMenuActivity"
+                android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+                android:name=".activitys.SelectLineupActivity"
+                android:parentActivityName=".activitys.SelectTeamActivity"
+                android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+                android:name=".activitys.GameActivity"
+                android:parentActivityName=".activitys.SelectLineupActivity"
+                android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
+
         </activity>
+
+        <meta-data
+                android:name="preloaded_fonts"
+                android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

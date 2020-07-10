@@ -21,7 +21,7 @@ import com.android.f_project.datamodel.Team_model
 import com.android.f_project.shuffle
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_gamesimulation.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -34,6 +34,7 @@ class GameActivity : AppCompatActivity() {
     private val contentList = ArrayList<Scene_model>()
     private var timeToken = 0
     private var gameOverToken = false
+    private var halfTimeToken = false
     private var gameStatus: Status_model = Status_model.Midfield
     private lateinit var adapter: ListAdapter
     private lateinit var rv: RecyclerView
@@ -43,7 +44,7 @@ class GameActivity : AppCompatActivity() {
         TODO -Implementing Spielverlauf ✔
         TODO -Implementing 0..90 ✔
         TODO States(wo sind wir im Feld) ✔
-        TODO MakeTeams (GK Def MFs,Atk und suche einen random pro Scene aus)
+        TODO MakeTeams interact (GK Def MFs,Atk und suche einen random pro Scene aus)
         TODO -Implementing BaseLogic ✔
         TODO -Implementing Logic(PlayerStats, Strategy, Tactics, Moral)
         TODO -Buttons mit Actions versehen
@@ -55,7 +56,7 @@ class GameActivity : AppCompatActivity() {
         TODO -adding Players ---> API? --> SQL ✔
         TODO -Animationen für actions
         TODO -Firebase-Anbindung um Highscore zu speichern ✔
-        TODO -Gamemodes (Create a Team_model, Online Competitive)
+        TODO -Gamemodes (Create a Team_model, Online)
 
         pass shoot midfield attack defense
         event,action,followup --> scene each of this?=listitem?
@@ -64,12 +65,12 @@ class GameActivity : AppCompatActivity() {
         Auswechslung -->immer
         Taktik-->immer? bei Standardsituationen wenn condition(condition wäre rückstand?)
 
-        TODO-NEXT Create Auftsellung Sturm mittelfeld Def (Sturm vs Def, MF vs MF, Attacker vs GK)
+        TODO-NEXT Create Auftsellung Sturm mittelfeld Def ( MF vs MF, Attacker vs Def/GK)
  */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_gamesimulation)
 
         val selectedTeam = intent.getParcelableExtra<Team_model>("selectedTeam")
         val selectedTeam2 = intent.getParcelableExtra<Team_model>("selectedTeam2")
@@ -87,6 +88,7 @@ class GameActivity : AppCompatActivity() {
         adapter = ListAdapter(contentList)
 
         interaction_one.setOnClickListener {
+            //TODO init auf disabled setzen
             interactionOne()
         }
         interaction_two.setOnClickListener {
@@ -96,9 +98,6 @@ class GameActivity : AppCompatActivity() {
         rv.adapter = adapter
 
 
-        val myDatabase = MyDbHelper(this).readableDatabase
-
-        var playaList = mutableListOf<Player_model>()
         sqlconnections()
         startGame()
         animateClock()
@@ -116,13 +115,14 @@ class GameActivity : AppCompatActivity() {
         }
     }
 
+    private fun interactionOne() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     private fun interactionTwo() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun interactionOne() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     private fun sqlconnections() {
         val myDatabase = MyDbHelper(this).readableDatabase
@@ -142,7 +142,7 @@ class GameActivity : AppCompatActivity() {
                     val nationality = cursor.getString(3)
                     val overall = cursor.getString(4)
                     val position = cursor.getString(5)
-                    val jerseyNumber = cursor.getString(6)
+                    val number = cursor.getString(6)
                     val player =
                         Player_model(
                             id,
@@ -152,7 +152,7 @@ class GameActivity : AppCompatActivity() {
                             nationality,
                             overall,
                             position,
-                            jerseyNumber
+                            number
                         )
                     playaList.add(player)
                     cursor.moveToNext()
@@ -197,6 +197,11 @@ class GameActivity : AppCompatActivity() {
 
     private fun createScene() {
         val endgame = createTime()
+        when (halfTimeToken) {
+            //TODO add halftimeScene and activate halfTimeToken somehow
+//            addHalfTime();
+//                addScene()
+        }
         when (endgame) {
             true -> {
                 addScene()
@@ -208,11 +213,6 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun createTime(): Boolean {
-//        when (gameOverToken) {
-//            true -> {
-//                endGame()
-//            }
-//            false -> {
         val time: Int
         when (timeToken) {
             0, 1 -> {
@@ -230,6 +230,11 @@ class GameActivity : AppCompatActivity() {
     private fun checkTimer(timer: Int): Boolean {
         //check halftime aswell
         when (timer) {
+            in 37..46 -> {
+                gameTimer = 45
+                this.halfTimeToken = true
+                return true
+            }
             in 88..90 -> {
                 gameTimer = 90
                 this.gameOverToken = true

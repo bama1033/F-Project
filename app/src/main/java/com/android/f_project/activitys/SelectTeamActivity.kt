@@ -39,7 +39,7 @@ class SelectTeamActivity : AppCompatActivity() {
         }
 
         select_button.setOnClickListener {
-            startGame()
+            selectLineup()
         }
     }
 
@@ -158,13 +158,8 @@ class SelectTeamActivity : AppCompatActivity() {
     }
 
 
-    private fun startGame() {
-//        val intent = Intent(this, GameActivity::class.java)
-//        val bundle = Bundle()
-//        bundle.putParcelable("selected_person",teams[counter])
-//        intent.putExtra("selectedTeam",bundle)
-//        startActivity(intent)
-        this.startActivity(Intent(this, GameActivity::class.java).apply {
+    private fun selectLineup() {
+        this.startActivity(Intent(this, SelectLineupActivity::class.java).apply {
             putExtra("selectedTeam", teams[counter])
             putExtra("selectedTeam2", teams[counter2])
         })

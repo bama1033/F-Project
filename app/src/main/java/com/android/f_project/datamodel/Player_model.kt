@@ -10,7 +10,7 @@ data class Player_model(
     val age: String?,
     val team: String?,
     val nationality: String?,
-    val jerseyNumber: String?,
+    val number: String?,
     val position: String?,
     val overall: String?
 ) : Parcelable

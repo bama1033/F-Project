@@ -40,7 +40,9 @@
     <string name="league_name">Leaguename</string>
     <string name="select">Select Teams</string>
     <string name="no">No</string>
+    <string name="confirm">Confirm</string>
     <string name="yes">Yes</string>
+    <string name="back">Back</string>
     <string name="matchzusammenfassung">Matchzusammenfassung</string>
 
 </resources>
