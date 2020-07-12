@@ -61,7 +61,7 @@ class MainMenuActivity : AppCompatActivity() {
                     "Service currently disabled",
                     Toast.LENGTH_SHORT
                 ).show()
-                button_scores.isEnabled=true
+                button_scores.isEnabled = true
             }
     }
 }

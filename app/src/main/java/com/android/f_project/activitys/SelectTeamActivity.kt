@@ -1,9 +1,12 @@
 package com.android.f_project.activitys
 
 import android.content.Intent
+import android.os.AsyncTask
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.android.f_project.MyDbHelper
 import com.android.f_project.R
+import com.android.f_project.datamodel.Player_model
 import com.android.f_project.datamodel.Team_model
 import kotlinx.android.synthetic.main.activity_select_team.*
 
@@ -12,6 +15,8 @@ class SelectTeamActivity : AppCompatActivity() {
     private val teams = ArrayList<Team_model>()
     private var counter: Int = 0
     private var counter2: Int = 1
+    private lateinit var selectedTeam: Team_model
+    private lateinit var selectedTeam2: Team_model
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,19 +81,7 @@ class SelectTeamActivity : AppCompatActivity() {
                 "Germany",
                 "Bundesliga",
                 R.drawable.bayern_muenchen,
-                null
-//                ArrayList<Team_model>(
-//                    Player_model(
-//                        "1",
-//                        "asa",
-//                        "10",
-//                        "asdas",
-//                    "dassa",
-//                        "10",
-//                        "dasd",
-//                        "as"
-//                    )
-//                )
+                sqlconnections(getString(R.string.team_bayern_muenchen))
             )
         )
         teams.add(
@@ -98,7 +91,7 @@ class SelectTeamActivity : AppCompatActivity() {
                 "Germany",
                 "Bundesliga",
                 R.drawable.borussia_dortmund,
-                null
+                sqlconnections(getString(R.string.team_borussia_dortmund))
             )
         )
         teams.add(
@@ -108,7 +101,7 @@ class SelectTeamActivity : AppCompatActivity() {
                 "England",
                 "Premier League",
                 R.drawable.liverpool,
-                null
+                sqlconnections(getString(R.string.team_liverpool))
             )
         )
         teams.add(
@@ -118,7 +111,7 @@ class SelectTeamActivity : AppCompatActivity() {
                 "Spain",
                 "Primiera Division",
                 R.drawable.real_madrid,
-                null
+                sqlconnections(getString(R.string.team_real_madrid))
             )
         )
         teams.add(
@@ -128,7 +121,7 @@ class SelectTeamActivity : AppCompatActivity() {
                 "France",
                 "Ligue 1",
                 R.drawable.paris_saint_germain,
-                null
+                sqlconnections(getString(R.string.team_paris))
             )
         )
         teams.add(
@@ -138,9 +131,49 @@ class SelectTeamActivity : AppCompatActivity() {
                 "England",
                 "Premier League",
                 R.drawable.manchester_city,
-                null
+                sqlconnections(getString(R.string.team_manchester_city))
             )
         )
+    }
+
+    private fun sqlconnections(teamName: String): MutableList<Player_model> {
+        val myDatabase = MyDbHelper(this).readableDatabase
+        val playerList = mutableListOf<Player_model>()
+        lateinit var playa: Player_model
+        AsyncTask.execute {
+            val cursor = myDatabase.rawQuery(
+                "SELECT _id,Name,Age,Nationality,\"Jersey Number\",Position,Overall FROM data\n" +
+                        "WHERE Club=?;", arrayOf(teamName)
+            )
+            if (cursor.moveToFirst()) {
+
+                while (!cursor.isAfterLast) {
+                    //your code to implement
+                    val id = cursor.getString(0)
+                    val name = cursor.getString(1)
+                    val age = cursor.getString(2)
+                    val nationality = cursor.getString(3)
+                    val overall = cursor.getString(4)
+                    val position = cursor.getString(5)
+                    val number = cursor.getString(6)
+                    playa =
+                        Player_model(
+                            id,
+                            name,
+                            age,
+                            teamName,
+                            nationality,
+                            overall,
+                            position,
+                            number
+                        )
+                    playerList.add(playa)
+                    cursor.moveToNext()
+                }
+            }
+            cursor.close()
+        }
+        return playerList
     }
 
     private fun populateView(teamList: ArrayList<Team_model>) {
@@ -156,7 +189,6 @@ class SelectTeamActivity : AppCompatActivity() {
         league_name2.text = chosen.league
         chosen.logo_res?.let { team_logo2.setImageResource(it) }
     }
-
 
     private fun selectLineup() {
         this.startActivity(Intent(this, SelectLineupActivity::class.java).apply {

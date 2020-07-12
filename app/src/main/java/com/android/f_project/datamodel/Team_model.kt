@@ -10,5 +10,5 @@ data class Team_model(
     val country: String?,
     val league: String?,
     val logo_res: Int?,
-    val players: List<Player_model?>?
+    var players: MutableList<Player_model>
 ) :Parcelable

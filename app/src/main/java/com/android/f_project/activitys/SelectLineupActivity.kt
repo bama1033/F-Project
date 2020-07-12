@@ -2,7 +2,6 @@ package com.android.f_project.activitys
 
 import android.content.ClipData
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.MotionEvent
 import android.view.View
@@ -55,9 +54,9 @@ class SelectLineupActivity : AppCompatActivity() {
     }
 
 
-    fun toggleView() {
+    private fun toggleView() {
         for (i in formations) {
-            i.visibility = View.GONE
+            i.visibility = GONE
         }
         formations[selectedFormation].visibility = VISIBLE
     }
@@ -75,18 +74,12 @@ class SelectLineupActivity : AppCompatActivity() {
             motionEvent: MotionEvent
         ): Boolean {
             return if (motionEvent.action == MotionEvent.ACTION_DOWN) {
-                val data = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                val data =
                     ClipData.newPlainText("", "")
-                } else {
-                    TODO("VERSION.SDK_INT < HONEYCOMB")
-                }
-                val shadowBuilder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                val shadowBuilder =
                     DragShadowBuilder(
                         view
                     )
-                } else {
-                    TODO("VERSION.SDK_INT < HONEYCOMB")
-                }
                 view.startDrag(data, shadowBuilder, view, 0)
 //                view.visibility = VISIBLE
                 true
@@ -100,7 +93,7 @@ class SelectLineupActivity : AppCompatActivity() {
     //First select Aufstellung
     //Then select players(init highest rated players take place)
     //Then safe
-//    IMplement button that switches between playername -- number == position
+    //TODO    Implement button that switches between playername -- number == position
 
 
 //    changeFormation(){
@@ -112,8 +105,8 @@ class SelectLineupActivity : AppCompatActivity() {
 //        2-1-2-5
 //        1-1-3-5
 //        1-3-2-4
+
 //        1-2-4-3
-//    }
 }
 
 

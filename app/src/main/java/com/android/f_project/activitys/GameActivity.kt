@@ -1,7 +1,6 @@
 package com.android.f_project.activitys
 
 import android.graphics.drawable.Animatable
-import android.os.AsyncTask
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -12,9 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.f_project.ListAdapter
-import com.android.f_project.MyDbHelper
 import com.android.f_project.R
-import com.android.f_project.datamodel.Player_model
 import com.android.f_project.datamodel.Scene_model
 import com.android.f_project.datamodel.Status_model
 import com.android.f_project.datamodel.Team_model
@@ -35,6 +32,8 @@ class GameActivity : AppCompatActivity() {
     private var timeToken = 0
     private var gameOverToken = false
     private var halfTimeToken = false
+    private lateinit var selectedTeam: Team_model
+    private lateinit var selectedTeam2: Team_model
     private var gameStatus: Status_model = Status_model.Midfield
     private lateinit var adapter: ListAdapter
     private lateinit var rv: RecyclerView
@@ -66,24 +65,21 @@ class GameActivity : AppCompatActivity() {
         Taktik-->immer? bei Standardsituationen wenn condition(condition wäre rückstand?)
 
         TODO-NEXT Create Auftsellung Sturm mittelfeld Def ( MF vs MF, Attacker vs Def/GK)
+        TODO expand palyerstats by skillmoves,defending,passing,gk,strike
+        TODO playercards
  */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gamesimulation)
 
-        val selectedTeam = intent.getParcelableExtra<Team_model>("selectedTeam")
-        val selectedTeam2 = intent.getParcelableExtra<Team_model>("selectedTeam2")
+        selectedTeam = intent.getParcelableExtra<Team_model>("selectedTeam")
+        selectedTeam2 = intent.getParcelableExtra<Team_model>("selectedTeam2")
         setTeams(
             selectedTeam,
             selectedTeam2
         )
         rv = findViewById(R.id.game_course)
-
-//        val bundle = intent.getBundleExtra("selected_person")
-//        var team  = bundle.getParcelable("selectedTeam") as Team_model
-
-//        selectedTeam= intent.getParcelableExtra("selectedTeam") as Team_model
 
         adapter = ListAdapter(contentList)
 
@@ -98,7 +94,7 @@ class GameActivity : AppCompatActivity() {
         rv.adapter = adapter
 
 
-        sqlconnections()
+//        sqlconnections()
         startGame()
         animateClock()
         delayMainStart(adapter, rv)
@@ -124,52 +120,62 @@ class GameActivity : AppCompatActivity() {
     }
 
 
-    private fun sqlconnections() {
-        val myDatabase = MyDbHelper(this).readableDatabase
-
-        var playaList = mutableListOf<Player_model>()
-        AsyncTask.execute {
-            val cursor = myDatabase.rawQuery(
-                "SELECT _id,Name,Age,Nationality,\"Jersey Number\",Position,Overall FROM data\n" +
-                        "WHERE Club=?;", arrayOf("Borussia Dortmund")
-            )
-            if (cursor.moveToFirst()) {
-                while (!cursor.isAfterLast) {
-                    //your code to implement
-                    val id = cursor.getString(0)
-                    val name = cursor.getString(1)
-                    val age = cursor.getString(2)
-                    val nationality = cursor.getString(3)
-                    val overall = cursor.getString(4)
-                    val position = cursor.getString(5)
-                    val number = cursor.getString(6)
-                    val player =
-                        Player_model(
-                            id,
-                            name,
-                            age,
-                            "Borussia Dortmund",
-                            nationality,
-                            overall,
-                            position,
-                            number
-                        )
-                    playaList.add(player)
-                    cursor.moveToNext()
-                }
-            }
-            cursor.close()
-
-            val x = myDatabase.rawQuery("SELECT Age FROM data WHERE name = ?;", arrayOf("De Gea"))
-//            val age=x.getColumnIndexOrThrow("Age")
-            val actualage: String
-//            if (x.moveToFirst())
-//                actualage = x.getString(3)
-            // Prevent a crash if there is no data for this name
-//            else
-//            val actualage=x.getString(3)
-        }
-    }
+//    private fun sqlconnections() {
+//        val myDatabase = MyDbHelper(this).readableDatabase
+//        val teams = ArrayList<Team_model>()
+//        teams.add(selectedTeam)
+//        teams.add(selectedTeam2)
+//
+//        for (team in teams) {
+//            val teamList = mutableListOf<Team_model>()
+//            val playerList = mutableListOf<Player_model>()
+//            lateinit var playa: Player_model
+//            AsyncTask.execute {
+//                val cursor = myDatabase.rawQuery(
+//                    "SELECT _id,Name,Age,Nationality,\"Jersey Number\",Position,Overall FROM data\n" +
+//                            "WHERE Club=?;", arrayOf(team.name)
+//                )
+//                if (cursor.moveToFirst()) {
+//
+//                    while (!cursor.isAfterLast) {
+//                        //your code to implement
+//                        val id = cursor.getString(0)
+//                        val name = cursor.getString(1)
+//                        val age = cursor.getString(2)
+//                        val nationality = cursor.getString(3)
+//                        val overall = cursor.getString(4)
+//                        val position = cursor.getString(5)
+//                        val number = cursor.getString(6)
+//                        playa =
+//                            Player_model(
+//                                id,
+//                                name,
+//                                age,
+//                                team.name,
+//                                nationality,
+//                                overall,
+//                                position,
+//                                number
+//                            )
+//                        playerList.add(playa)
+//                        cursor.moveToNext()
+//                    }
+//                }
+//                cursor.close()
+//                teamList.add(
+//                    Team_model(
+//                        "0",
+//                        "Dortmund",
+//                        "Germany",
+//                        "Bundesliga",
+//                        0,
+//                        playerList
+//                    )
+//                )
+//                team.players = playerList
+//            }
+//        }
+//    }
 
     private fun setTeams(team_one: Team_model, team_two: Team_model) {
         setViewText(team_home, team_one.name)
@@ -345,8 +351,8 @@ class GameActivity : AppCompatActivity() {
         addSceneSpecial(
             getString(
                 R.string.scene_beginning,
-                getString(R.string.team_borussia_dortmund),
-                getString(R.string.team_bayern_muenchen)
+                selectedTeam.name,
+                selectedTeam2.name
             )
         )
     }
@@ -372,7 +378,7 @@ class GameActivity : AppCompatActivity() {
         mDocRef.set(dataSave as Map<String, Any>).addOnSuccessListener {
             Log.d("FirebaseManager", "Upload Successful")
         }.addOnFailureListener {
-            Log.d("FirebaseManager", "Klappt net")
+            Log.d("FirebaseManager", "Upload hat nicht geklappt")
         }
     }
 

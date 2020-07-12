@@ -11,7 +11,7 @@
     <string name="team_bayern_muenchen">FC Bayern München</string>
     <string name="team_liverpool">Liverpool</string>
     <string name="team_manchester_city">Manchester City</string>
-    <string name="team_paris">Paris Saint Germain</string>
+    <string name="team_paris">Paris Saint-Germain</string>
     <string name="team_real_madrid">Real Madrid</string>
     <!--<scenes>-->
     <string name="scene_beginning">It\'s starting! %1s vs %2s</string>
