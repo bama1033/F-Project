@@ -67,6 +67,8 @@ class GameActivity : AppCompatActivity() {
         TODO-NEXT Create Auftsellung Sturm mittelfeld Def ( MF vs MF, Attacker vs Def/GK)
         TODO expand palyerstats by skillmoves,defending,passing,gk,strike
         TODO playercards
+        als sstrategie passen oder dribbeln, dann eentscheidet sich mit was gerollt wird
+        +anzahl der spieler umso mehr spielr umso besser verteidigung
  */
 
     override fun onCreate(savedInstanceState: Bundle?) {

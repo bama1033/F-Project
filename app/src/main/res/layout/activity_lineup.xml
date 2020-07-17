@@ -10,56 +10,56 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="70dp" />
+            app:layout_constraintGuide_percent="0.16" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_end="70dp" />
+            app:layout_constraintGuide_percent="0.85" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_begin="50dp" />
+            app:layout_constraintGuide_percent="0.09" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="20dp" />
+            app:layout_constraintGuide_percent="0.95" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/field_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="180dp" />
+            app:layout_constraintGuide_percent="0.76" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/field_bottom2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="240dp" />
+            app:layout_constraintGuide_percent="0.68" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/field_bottom3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="270dp" />
+            app:layout_constraintGuide_percent="0.63" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/field_bottom4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="310dp" />
+            app:layout_constraintGuide_percent="0.58" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/field_bottom5"
@@ -73,22 +73,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="410dp" />
+            app:layout_constraintGuide_percent="0.45" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/field_bottom7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="440dp" />
+            app:layout_constraintGuide_percent="0.4" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/field_bottom8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_end="480dp" />
-
+            app:layout_constraintGuide_percent="0.35" />
 
     <ImageView
             android:id="@+id/soccer_field"
@@ -103,7 +102,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/soccer_field" />
-
 
     <include
             android:id="@+id/player_1"
@@ -328,7 +326,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:fontFamily="@font/coming_soon"
-            android:gravity="start"
             android:text="Aufstellung"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
@@ -347,7 +344,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/coming_soon"
-            android:gravity="start"
             android:text="2-3-1-4"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
