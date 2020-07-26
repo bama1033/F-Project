@@ -66,7 +66,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
+            app:layout_constraintGuide_begin="366dp" />
 
     <androidx.constraintlayout.widget.Guideline
             android:id="@+id/field_bottom6"
@@ -108,6 +108,7 @@
             layout="@layout/icon_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/field_bottom"
             app:layout_constraintEnd_toEndOf="@id/soccer_field"
             app:layout_constraintStart_toStartOf="@id/soccer_field" />
@@ -117,6 +118,7 @@
             layout="@layout/icon_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/field_bottom2"
             app:layout_constraintEnd_toStartOf="@id/player_3"
             app:layout_constraintStart_toEndOf="@id/player_5" />
@@ -126,6 +128,7 @@
             layout="@layout/icon_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/field_bottom2"
             app:layout_constraintEnd_toStartOf="@id/player_4"
             app:layout_constraintStart_toEndOf="@id/player_2" />
@@ -135,6 +138,7 @@
             layout="@layout/icon_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/field_bottom3"
             app:layout_constraintEnd_toEndOf="@+id/guideline_end" />
 
@@ -143,6 +147,7 @@
             layout="@layout/icon_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/field_bottom3"
             app:layout_constraintStart_toStartOf="@+id/guideline_start" />
 
@@ -151,6 +156,7 @@
             layout="@layout/icon_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/field_bottom4"
             app:layout_constraintEnd_toEndOf="@id/soccer_field"
             app:layout_constraintStart_toStartOf="@id/soccer_field" />
@@ -160,6 +166,7 @@
             layout="@layout/icon_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/field_bottom6"
             app:layout_constraintStart_toStartOf="@id/guideline_start" />
 
@@ -168,6 +175,7 @@
             layout="@layout/icon_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/field_bottom6"
             app:layout_constraintEnd_toEndOf="@id/guideline_end" />
 
@@ -177,6 +185,7 @@
             layout="@layout/icon_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/field_bottom7"
             app:layout_constraintEnd_toStartOf="@id/player_4"
             app:layout_constraintStart_toEndOf="@id/player_2" />
@@ -186,6 +195,7 @@
             layout="@layout/icon_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/field_bottom5"
             app:layout_constraintEnd_toStartOf="@id/player_3"
             app:layout_constraintStart_toEndOf="@id/player_5" />
@@ -195,6 +205,7 @@
             layout="@layout/icon_player"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/field_bottom8"
             app:layout_constraintEnd_toStartOf="@id/player_3"
             app:layout_constraintStart_toEndOf="@id/player_5" />
@@ -306,6 +317,102 @@
             app:layout_constraintEnd_toEndOf="@id/soccer_field"
             app:layout_constraintStart_toStartOf="@id/soccer_field" />
 
+    <include
+            android:id="@+id/player_13"
+            layout="@layout/icon_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/field_bottom"
+            app:layout_constraintEnd_toEndOf="@id/soccer_field"
+            app:layout_constraintStart_toStartOf="@id/soccer_field" />
+
+    <include
+            android:id="@+id/player_23"
+            layout="@layout/icon_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/field_bottom2"
+            app:layout_constraintEnd_toEndOf="@id/soccer_field"
+            app:layout_constraintStart_toStartOf="@id/soccer_field" />
+
+    <include
+            android:id="@+id/player_33"
+            layout="@layout/icon_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/field_bottom2"
+            app:layout_constraintStart_toEndOf="@id/guideline_start"
+            app:layout_constraintEnd_toStartOf="@id/player_53"
+            app:layout_constraintHorizontal_bias="0.7" />
+
+    <include
+            android:id="@+id/player_43"
+            layout="@layout/icon_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@+id/guideline_end"
+            app:layout_constraintTop_toBottomOf="@id/field_bottom5" />
+
+    <include
+            android:id="@+id/player_53"
+            layout="@layout/icon_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/field_bottom2"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintStart_toEndOf="@id/player_33" />
+
+    <include
+            android:id="@+id/player_63"
+            layout="@layout/icon_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toEndOf="@+id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/field_bottom5" />
+
+    <include
+            android:id="@+id/player_73"
+            layout="@layout/icon_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/field_bottom6"
+            app:layout_constraintStart_toStartOf="@id/guideline_start" />
+
+    <include
+            android:id="@+id/player_83"
+            layout="@layout/icon_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/field_bottom6"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end" />
+
+    <include
+            android:id="@+id/player_93"
+            layout="@layout/icon_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/field_bottom6"
+            app:layout_constraintEnd_toEndOf="@id/soccer_field"
+            app:layout_constraintStart_toStartOf="@id/soccer_field" />
+
+    <include
+            android:id="@+id/player_103"
+            layout="@layout/icon_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/field_bottom4"
+            app:layout_constraintEnd_toEndOf="@id/soccer_field"
+            app:layout_constraintStart_toStartOf="@id/soccer_field" />
+
+    <include
+            android:id="@+id/player_113"
+            layout="@layout/icon_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/field_bottom8"
+            app:layout_constraintEnd_toEndOf="@id/soccer_field"
+            app:layout_constraintStart_toStartOf="@id/soccer_field" />
 
     <Button
             android:id="@+id/interaction_two_lineup"
@@ -339,10 +446,26 @@
             app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
+            android:id="@+id/formation_text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+
+            android:fontFamily="@font/coming_soon"
+            android:text="Standard"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:textColor="@color/colorTextGrey"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:typeface="monospace"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline_top" />
+    <TextView
             android:id="@+id/formation"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:fontFamily="@font/coming_soon"
             android:text="2-3-1-4"
             android:textAlignment="center"
@@ -354,7 +477,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline_top" />
+            app:layout_constraintTop_toBottomOf="@+id/formation_text" />
 
     <ImageButton
             android:id="@+id/previous_button_formation"
@@ -389,5 +512,12 @@
             android:layout_height="wrap_content"
             android:visibility="visible"
             app:constraint_referenced_ids="player_12,player_22,player_32,player_42,player_52,player_62,player_72,player_82,player_92,player_102,player_112" />
+
+    <androidx.constraintlayout.widget.Group
+            android:id="@+id/group2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            app:constraint_referenced_ids="player_13,player_23,player_33,player_43,player_53,player_63,player_73,player_83,player_93,player_103,player_113" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

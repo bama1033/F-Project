@@ -8,6 +8,7 @@ import android.view.View
 import android.view.View.*
 import androidx.appcompat.app.AppCompatActivity
 import com.android.f_project.R
+import com.android.f_project.datamodel.Formation_model
 import com.android.f_project.datamodel.Team_model
 import kotlinx.android.synthetic.main.activity_lineup.*
 
@@ -15,7 +16,23 @@ import kotlinx.android.synthetic.main.activity_lineup.*
 class SelectLineupActivity : AppCompatActivity() {
 
     private val formations = ArrayList<androidx.constraintlayout.widget.Group>()
-    private var selectedFormation: Int = 1
+    private var selectedFormation: Int = 0
+
+    private var formation1: Formation_model = Formation_model("0", "Hängende Spitze", "2-3-1-4")
+    private var formation2: Formation_model = Formation_model("1", "Standard", "3-1-2-4")
+    private var formation3: Formation_model = Formation_model("2", "Bollwerk", "1-3-1-5")
+    private var listOfFormations = mutableListOf(formation1, formation2, formation3)
+    //    changeFormation(){
+//        2-3-1-4
+//        3-1-2-4
+//        1-3-1-5
+
+//        1-2-3-4
+//        2-1-2-5
+//        1-1-3-5
+//        1-3-2-4
+
+//        1-2-4-3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +40,9 @@ class SelectLineupActivity : AppCompatActivity() {
 
         formations.add(group0)
         formations.add(group1)
+        formations.add(group2)
 
+        toggleView()
         interaction_two_lineup.setOnClickListener {
             startGame()
         }
@@ -58,6 +77,9 @@ class SelectLineupActivity : AppCompatActivity() {
         for (i in formations) {
             i.visibility = GONE
         }
+
+        formation_text.text = listOfFormations.get(selectedFormation).name
+        formation.text = listOfFormations.get(selectedFormation).distribution
         formations[selectedFormation].visibility = VISIBLE
     }
 
@@ -94,19 +116,6 @@ class SelectLineupActivity : AppCompatActivity() {
     //Then select players(init highest rated players take place)
     //Then safe
     //TODO    Implement button that switches between playername -- number == position
-
-
-//    changeFormation(){
-//        2-3-1-4
-//        3-1-2-4
-
-//        1-2-3-4
-//        1-3-1-5
-//        2-1-2-5
-//        1-1-3-5
-//        1-3-2-4
-
-//        1-2-4-3
 }
 
 

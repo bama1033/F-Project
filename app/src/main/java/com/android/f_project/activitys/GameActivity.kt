@@ -1,5 +1,6 @@
 package com.android.f_project.activitys
 
+import android.content.Intent
 import android.graphics.drawable.Animatable
 import android.os.Bundle
 import android.os.Handler
@@ -22,6 +23,7 @@ import kotlinx.android.synthetic.main.activity_gamesimulation.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
+import kotlin.math.floor
 
 
 class GameActivity : AppCompatActivity() {
@@ -38,6 +40,14 @@ class GameActivity : AppCompatActivity() {
     private lateinit var adapter: ListAdapter
     private lateinit var rv: RecyclerView
     private lateinit var mDocRef: DocumentReference
+    private val listAttackingPositions =
+        mutableListOf("ST", "LAM", "RAM", "CAM", "RM", "LM", "LF", "RF", "CF")
+    private val listMidfieldingPositions =
+        mutableListOf("CM", "LCM", "RCM", "RCM", "CDM", "RDM", "LDM")
+    private val listDefendingPositions =
+        mutableListOf("RB", "LB", "CB", "RCB", "LCB", "RWB", "LWB")
+    private val listGKPositions =
+        mutableListOf("GK")
 
 /*
         TODO -Implementing Spielverlauf ✔
@@ -45,30 +55,28 @@ class GameActivity : AppCompatActivity() {
         TODO States(wo sind wir im Feld) ✔
         TODO MakeTeams interact (GK Def MFs,Atk und suche einen random pro Scene aus)
         TODO -Implementing BaseLogic ✔
-        TODO -Implementing Logic(PlayerStats, Strategy, Tactics, Moral)
-        TODO -Buttons mit Actions versehen
+        TODO -Implementing PlayerStats
+        TODO -Implementing Strategy
+        TODO -Implementing Tactics
+        TODO -Implementing Moral
 
         TODO -Teamselector UI ✔
         TODO -Mainmenu(welcomescreen, modeselect, highscore, exit) ✔
 
         TODO -adding Teams  ---> API? --> SQL ✔
         TODO -adding Players ---> API? --> SQL ✔
-        TODO -Animationen für actions
+        TODO -Animationen/Screens für actions
         TODO -Firebase-Anbindung um Highscore zu speichern ✔
         TODO -Gamemodes (Create a Team_model, Online)
 
-        pass shoot midfield attack defense
-        event,action,followup --> scene each of this?=listitem?
-        strategie,auswechslung,taktik(verteidiger nach vorne)
-        Strategie-->HalbZeit und bei verlangerung
         Auswechslung -->immer
         Taktik-->immer? bei Standardsituationen wenn condition(condition wäre rückstand?)
 
-        TODO-NEXT Create Auftsellung Sturm mittelfeld Def ( MF vs MF, Attacker vs Def/GK)
-        TODO expand palyerstats by skillmoves,defending,passing,gk,strike
+        TODO-NEXT Create Auftsellung Sturm mittelfeld Def ( MF vs MF, Attacker vs Def/GK) ✔
+        TODO expand playerstats by skillmoves,defending,passing,gk,strike
         TODO playercards
-        als sstrategie passen oder dribbeln, dann eentscheidet sich mit was gerollt wird
-        +anzahl der spieler umso mehr spielr umso besser verteidigung
+        als strategie passen oder dribbeln, dann entscheidet sich mit was gerollt wird
+        +anzahl der spieler umso mehr spieler umso besser verteidigung
  */
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,6 +89,7 @@ class GameActivity : AppCompatActivity() {
             selectedTeam,
             selectedTeam2
         )
+
         rv = findViewById(R.id.game_course)
 
         adapter = ListAdapter(contentList)
@@ -94,13 +103,9 @@ class GameActivity : AppCompatActivity() {
         }
         rv.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv.adapter = adapter
-
-
-//        sqlconnections()
         startGame()
         animateClock()
         delayMainStart(adapter, rv)
-
     }
 
     private fun animateClock() {
@@ -114,70 +119,13 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun interactionOne() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        finish()
+        this.startActivity(Intent(this, MainMenuActivity::class.java))
     }
 
     private fun interactionTwo() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
-
-
-//    private fun sqlconnections() {
-//        val myDatabase = MyDbHelper(this).readableDatabase
-//        val teams = ArrayList<Team_model>()
-//        teams.add(selectedTeam)
-//        teams.add(selectedTeam2)
-//
-//        for (team in teams) {
-//            val teamList = mutableListOf<Team_model>()
-//            val playerList = mutableListOf<Player_model>()
-//            lateinit var playa: Player_model
-//            AsyncTask.execute {
-//                val cursor = myDatabase.rawQuery(
-//                    "SELECT _id,Name,Age,Nationality,\"Jersey Number\",Position,Overall FROM data\n" +
-//                            "WHERE Club=?;", arrayOf(team.name)
-//                )
-//                if (cursor.moveToFirst()) {
-//
-//                    while (!cursor.isAfterLast) {
-//                        //your code to implement
-//                        val id = cursor.getString(0)
-//                        val name = cursor.getString(1)
-//                        val age = cursor.getString(2)
-//                        val nationality = cursor.getString(3)
-//                        val overall = cursor.getString(4)
-//                        val position = cursor.getString(5)
-//                        val number = cursor.getString(6)
-//                        playa =
-//                            Player_model(
-//                                id,
-//                                name,
-//                                age,
-//                                team.name,
-//                                nationality,
-//                                overall,
-//                                position,
-//                                number
-//                            )
-//                        playerList.add(playa)
-//                        cursor.moveToNext()
-//                    }
-//                }
-//                cursor.close()
-//                teamList.add(
-//                    Team_model(
-//                        "0",
-//                        "Dortmund",
-//                        "Germany",
-//                        "Bundesliga",
-//                        0,
-//                        playerList
-//                    )
-//                )
-//                team.players = playerList
-//            }
-//        }
-//    }
 
     private fun setTeams(team_one: Team_model, team_two: Team_model) {
         setViewText(team_home, team_one.name)
@@ -207,8 +155,8 @@ class GameActivity : AppCompatActivity() {
         val endgame = createTime()
         when (halfTimeToken) {
             //TODO add halftimeScene and activate halfTimeToken somehow
+//            addSceneSpecial
 //            addHalfTime();
-//                addScene()
         }
         when (endgame) {
             true -> {
@@ -236,7 +184,6 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun checkTimer(timer: Int): Boolean {
-        //check halftime aswell
         when (timer) {
             in 37..46 -> {
                 gameTimer = 45
@@ -247,7 +194,6 @@ class GameActivity : AppCompatActivity() {
                 gameTimer = 90
                 this.gameOverToken = true
                 return false
-
             }
             in 91..96 -> {
                 gameTimer = 93
@@ -256,13 +202,11 @@ class GameActivity : AppCompatActivity() {
             }
             else -> {
                 gameTimer = timer
-                //addScene(string)
                 return true
             }
         }
     }
 
-    //replace this for addScene
     private fun addSceneSpecial(special: String) {
         contentList.add(Scene_model(gameTimer.toString(), special, gameStatus))
         updateTime()
@@ -275,23 +219,30 @@ class GameActivity : AppCompatActivity() {
         val dice = shuffle()
         when (gameStatus) {
             Status_model.Midfield -> {
-                content = getString(R.string.scene_pass1)
+                content = getString(getPassingText())
                 when (dice) {
                     in 1..5 -> {
                         gameStatus = Status_model.Defense
                     }
-                    in 6..10 -> {
+                    in 6..9 -> {
                         gameStatus = Status_model.Attack
                     }
+                    10 -> {
+                        gameStatus = Status_model.Midfield
+                        //Ball zirtkuliert in der mitte
+                    }
                 }
-
             }
             Status_model.Attack -> {
-                content = getString(getStringText())
+                content = getString(getAttackingText())
                 when (shuffle()) {
                     in 1..5 -> {
-                        content = content + " " + getString(R.string.scene_goal_success1)
+
+                        val playaname = getAttackingPlayerText()
+                        content =
+                            "$content $playaname mit dem " + getString(R.string.scene_goal_success1)
                         updateScore("home")
+
                     }
                     in 6..10 -> {
                         content = content + " " + getString(R.string.scene_goal_fail1)
@@ -307,14 +258,7 @@ class GameActivity : AppCompatActivity() {
                         updateScore("away")
                     }
                     in 6..10 -> {
-                        when (shuffle()) {
-                            in 1..5 -> {
-                                content = content + " " + getString(R.string.scene_gk_block1)
-                            }
-                            in 6..10 -> {
-                                content = content + " " + getString(R.string.scene_defender_block1)
-                            }
-                        }
+                        content = content + " " + getString(getDefendingText())
                     }
                 }
                 gameStatus = Status_model.Midfield
@@ -325,13 +269,43 @@ class GameActivity : AppCompatActivity() {
         updateAdapter()
     }
 
-    private fun getStringText(): Int {
-        val list4: MutableList<Int> = ArrayList()
-        list4.add(R.string.scene_shot1)
-        list4.add(R.string.scene_shot2)
-        list4.add(R.string.scene_shot3)
-        return list4.random()
-//        return R.string.scene_shot + "1"
+    private fun getAttackingPlayerText(): String? {
+        val noOfPlayersSelected2 = selectedTeam.players
+
+        val contains = noOfPlayersSelected2.filter { it.position in listAttackingPositions }
+        val noOfPlayersSelected = contains.size.toDouble()
+        return contains[getRandomInt(noOfPlayersSelected)].name
+    }
+
+    private fun getRandomInt(numba: Double): Int {
+        var randomNumba = floor(Math.random() * floor(numba)).toInt()
+        if (randomNumba == 0) {
+            randomNumba = 1
+        }
+        return randomNumba
+    }
+
+    private fun getAttackingText(): Int {
+        val attackingTextList: MutableList<Int> = ArrayList()
+        attackingTextList.add(R.string.scene_shot1)
+        attackingTextList.add(R.string.scene_shot2)
+        attackingTextList.add(R.string.scene_shot3)
+        return attackingTextList.random()
+    }
+
+    private fun getPassingText(): Int {
+        val passingTextList: MutableList<Int> = ArrayList()
+        passingTextList.add(R.string.scene_pass1)
+        passingTextList.add(R.string.scene_pass2)
+        passingTextList.add(R.string.scene_pass3)
+        return passingTextList.random()
+    }
+
+    private fun getDefendingText(): Int {
+        val defendingTextList: MutableList<Int> = ArrayList()
+        defendingTextList.add(R.string.scene_gk_block1)
+        defendingTextList.add(R.string.scene_defender_block1)
+        return defendingTextList.random()
     }
 
     private fun updateTime() {

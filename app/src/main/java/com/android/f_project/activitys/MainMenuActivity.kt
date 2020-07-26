@@ -30,6 +30,10 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        exitProcess(-1)
+    }
+
     private fun selectTeams() {
         this.startActivity(Intent(this, SelectTeamActivity::class.java))
     }

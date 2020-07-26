@@ -33,18 +33,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_end="50dp" />
 
-    <TextView
-            android:id="@+id/title_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/waiting_for_the_sunrise"
-            android:text="@string/f_project"
-            android:textColor="@color/colorTextGrey"
-            android:textSize="38sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
-            app:layout_constraintStart_toStartOf="@+id/guideline_start"
-            app:layout_constraintTop_toTopOf="@+id/guideline_top" />
 
     <ImageView
             android:id="@+id/main_menu_logo"
@@ -52,8 +40,8 @@
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toStartOf="@+id/guideline_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_start"
-            app:layout_constraintTop_toBottomOf="@+id/title_text_view"
-            app:srcCompat="@drawable/player_logo1" />
+            app:layout_constraintTop_toBottomOf="@+id/guideline_top"
+            app:srcCompat="@drawable/logo_with_background_faded_copy" />
 
     <Button
             android:id="@+id/button_start"
