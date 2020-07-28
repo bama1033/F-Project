@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
 import kotlin.math.floor
+import com.android.f_project.GlobalVariable
 
 
 class GameActivity : AppCompatActivity() {
@@ -40,14 +41,6 @@ class GameActivity : AppCompatActivity() {
     private lateinit var adapter: ListAdapter
     private lateinit var rv: RecyclerView
     private lateinit var mDocRef: DocumentReference
-    private val listAttackingPositions =
-        mutableListOf("ST", "LAM", "RAM", "CAM", "RM", "LM", "LF", "RF", "CF")
-    private val listMidfieldingPositions =
-        mutableListOf("CM", "LCM", "RCM", "RCM", "CDM", "RDM", "LDM")
-    private val listDefendingPositions =
-        mutableListOf("RB", "LB", "CB", "RCB", "LCB", "RWB", "LWB")
-    private val listGKPositions =
-        mutableListOf("GK")
 
 /*
         TODO -Implementing Spielverlauf ✔
@@ -55,26 +48,20 @@ class GameActivity : AppCompatActivity() {
         TODO States(wo sind wir im Feld) ✔
         TODO MakeTeams interact (GK Def MFs,Atk und suche einen random pro Scene aus)
         TODO -Implementing BaseLogic ✔
-        TODO -Implementing PlayerStats
+        TODO -Implementing PlayerStats ✔
         TODO -Implementing Strategy
-        TODO -Implementing Tactics
-        TODO -Implementing Moral
 
         TODO -Teamselector UI ✔
         TODO -Mainmenu(welcomescreen, modeselect, highscore, exit) ✔
-
         TODO -adding Teams  ---> API? --> SQL ✔
         TODO -adding Players ---> API? --> SQL ✔
         TODO -Animationen/Screens für actions
         TODO -Firebase-Anbindung um Highscore zu speichern ✔
         TODO -Gamemodes (Create a Team_model, Online)
 
-        Auswechslung -->immer
-        Taktik-->immer? bei Standardsituationen wenn condition(condition wäre rückstand?)
-
         TODO-NEXT Create Auftsellung Sturm mittelfeld Def ( MF vs MF, Attacker vs Def/GK) ✔
         TODO expand playerstats by skillmoves,defending,passing,gk,strike
-        TODO playercards
+        TODO playercards ✔
         als strategie passen oder dribbeln, dann entscheidet sich mit was gerollt wird
         +anzahl der spieler umso mehr spieler umso besser verteidigung
  */
@@ -272,7 +259,8 @@ class GameActivity : AppCompatActivity() {
     private fun getAttackingPlayerText(): String? {
         val noOfPlayersSelected2 = selectedTeam.players
 
-        val contains = noOfPlayersSelected2.filter { it.position in listAttackingPositions }
+        val contains =
+            noOfPlayersSelected2.filter { it.position in GlobalVariable.listAttackingPositions }
         val noOfPlayersSelected = contains.size.toDouble()
         return contains[getRandomInt(noOfPlayersSelected)].name
     }

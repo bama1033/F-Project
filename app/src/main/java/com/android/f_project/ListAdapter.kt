@@ -9,7 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.android.f_project.datamodel.Scene_model
 
-class ListAdapter(val contentList: ArrayList<Scene_model>) :
+class ListAdapter(private val contentList: ArrayList<Scene_model>) :
     RecyclerView.Adapter<ListAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.list_item_scene, parent, false)

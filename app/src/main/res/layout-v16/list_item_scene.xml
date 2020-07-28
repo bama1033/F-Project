@@ -9,13 +9,16 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
             android:id="@+id/card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/compColorThree"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:strokeColor="@color/colorBlack"
+            app:strokeWidth="2dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -31,8 +34,8 @@
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/coming_soon"
                     android:textAlignment="center"
-                    android:textSize="24sp"
                     android:textColor="#B4B4B4"
+                    android:textSize="24sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:text="90" />
@@ -45,8 +48,8 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
                     android:fontFamily="@font/coming_soon"
-                    android:textSize="18sp"
                     android:textColor="#B4B4B4"
+                    android:textSize="18sp"
                     app:layout_constraintBottom_toBottomOf="@id/time_field"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/time_field"
@@ -54,5 +57,5 @@
                     tools:text="Action" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 </androidx.constraintlayout.widget.ConstraintLayout>

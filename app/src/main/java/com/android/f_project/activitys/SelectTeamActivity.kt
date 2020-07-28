@@ -142,7 +142,7 @@ class SelectTeamActivity : AppCompatActivity() {
         lateinit var playa: Player_model
         AsyncTask.execute {
             val cursor = myDatabase.rawQuery(
-                "SELECT _id,Name,Age,Nationality,\"Jersey Number\",Position,Overall FROM data\n" +
+                "SELECT _id,Name,Age,Nationality,\"Jersey Number\",Position,Overall,Dribbling,ShortPassing,Finishing,Interceptions,GKReflexes FROM data\n" +
                         "WHERE Club=?;", arrayOf(teamName)
             )
             if (cursor.moveToFirst()) {
@@ -153,9 +153,14 @@ class SelectTeamActivity : AppCompatActivity() {
                     val name = cursor.getString(1)
                     val age = cursor.getString(2)
                     val nationality = cursor.getString(3)
-                    val overall = cursor.getString(4)
+                    val number = cursor.getString(4)
                     val position = cursor.getString(5)
-                    val number = cursor.getString(6)
+                    val overall = cursor.getString(6)
+                    val dribbling = cursor.getString(7)
+                    val passing = cursor.getString(8)
+                    val shooting = cursor.getString(9)
+                    val defending = cursor.getString(10)
+                    val goalkeeping = cursor.getString(11)
                     playa =
                         Player_model(
                             id,
@@ -163,9 +168,14 @@ class SelectTeamActivity : AppCompatActivity() {
                             age,
                             teamName,
                             nationality,
-                            overall,
+                            dribbling,
+                            passing,
+                            shooting,
+                            defending,
+                            goalkeeping,
+                            number,
                             position,
-                            number
+                            overall
                         )
                     playerList.add(playa)
                     cursor.moveToNext()

@@ -23,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:translationY="-12dp"
             android:text="11"
             android:fontFamily="@font/coming_soon"
             app:layout_constraintEnd_toEndOf="parent"

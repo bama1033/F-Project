@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.*
 import androidx.appcompat.app.AppCompatActivity
+import com.android.f_project.GlobalVariable
 import com.android.f_project.R
 import com.android.f_project.datamodel.Formation_model
 import com.android.f_project.datamodel.Team_model
@@ -18,21 +19,22 @@ class SelectLineupActivity : AppCompatActivity() {
     private val formations = ArrayList<androidx.constraintlayout.widget.Group>()
     private var selectedFormation: Int = 0
 
-    private var formation1: Formation_model = Formation_model("0", "Hängende Spitze", "2-3-1-4")
-    private var formation2: Formation_model = Formation_model("1", "Standard", "3-1-2-4")
-    private var formation3: Formation_model = Formation_model("2", "Bollwerk", "1-3-1-5")
-    private var listOfFormations = mutableListOf(formation1, formation2, formation3)
+    private var formation0: Formation_model = Formation_model("0", "Hängende Spitze", "2-3-1-4")
+    private var formation1: Formation_model = Formation_model("1", "Standard", "3-1-2-4")
+    private var formation2: Formation_model = Formation_model("2", "Bollwerk", "1-3-1-5")
+    private var formation3: Formation_model = Formation_model("3", "Balanced", "1-2-4-3")
+    private var listOfFormations = mutableListOf(formation0,formation1, formation2, formation3)
     //    changeFormation(){
-//        2-3-1-4
-//        3-1-2-4
-//        1-3-1-5
+    //        2-3-1-4
+    //        3-1-2-4
+    //        1-3-1-5
+    //        1-2-4-3
 
-//        1-2-3-4
-//        2-1-2-5
-//        1-1-3-5
-//        1-3-2-4
+    //        1-2-3-4
+    //        2-1-2-5
+    //        1-1-3-5
+    //        1-3-2-4
 
-//        1-2-4-3
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +43,8 @@ class SelectLineupActivity : AppCompatActivity() {
         formations.add(group0)
         formations.add(group1)
         formations.add(group2)
+        formations.add(group3)
+        GlobalVariable.listMidfieldingPositions
 
         toggleView()
         interaction_two_lineup.setOnClickListener {
@@ -78,8 +82,8 @@ class SelectLineupActivity : AppCompatActivity() {
             i.visibility = GONE
         }
 
-        formation_text.text = listOfFormations.get(selectedFormation).name
-        formation.text = listOfFormations.get(selectedFormation).distribution
+        formation_text.text = listOfFormations[selectedFormation].name
+        formation.text = listOfFormations[selectedFormation].distribution
         formations[selectedFormation].visibility = VISIBLE
     }
 
