@@ -46,21 +46,21 @@ class GameActivity : AppCompatActivity() {
         TODO -Implementing Spielverlauf ✔
         TODO -Implementing 0..90 ✔
         TODO States(wo sind wir im Feld) ✔
-        TODO MakeTeams interact (GK Def MFs,Atk und suche einen random pro Scene aus)
         TODO -Implementing BaseLogic ✔
         TODO -Implementing PlayerStats ✔
+        TODO MakeTeams interact (GK Def MFs,Atk und suche einen random pro Scene aus)
         TODO -Implementing Strategy
 
         TODO -Teamselector UI ✔
         TODO -Mainmenu(welcomescreen, modeselect, highscore, exit) ✔
         TODO -adding Teams  ---> API? --> SQL ✔
         TODO -adding Players ---> API? --> SQL ✔
-        TODO -Animationen/Screens für actions
         TODO -Firebase-Anbindung um Highscore zu speichern ✔
+        TODO -Animationen/Screens für actions
         TODO -Gamemodes (Create a Team_model, Online)
 
         TODO-NEXT Create Auftsellung Sturm mittelfeld Def ( MF vs MF, Attacker vs Def/GK) ✔
-        TODO expand playerstats by skillmoves,defending,passing,gk,strike
+        TODO expand playerstats by skillmoves,defending,passing,gk,strike ✔
         TODO playercards ✔
         als strategie passen oder dribbeln, dann entscheidet sich mit was gerollt wird
         +anzahl der spieler umso mehr spieler umso besser verteidigung
