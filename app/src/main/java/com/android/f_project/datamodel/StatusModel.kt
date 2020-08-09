@@ -1,7 +1,9 @@
 package com.android.f_project.datamodel
 
-enum class Status_model {
+enum class StatusModel {
     Defense,
     Midfield,
-    Attack
+    Attack,
+    Shot,
+    KickOff
 }

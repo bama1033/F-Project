@@ -16,17 +16,23 @@
     <!--<scenes>-->
     <string name="scene_beginning">It\'s starting! %1s vs %2s</string>
     <string name="scene_ending">Spiel ist vorbei!</string>
-    <!--<scenes_attacking>-->
+    <!--<scenes_shooting>-->
     <string name="scene_shot1">Schuss aus kurzer Entfernung!</string>
     <string name="scene_shot2">Schuss aus einem spitzen Winkel!</string>
     <string name="scene_shot3">Weiter Schuss aus der Distanz!</string>
+    <string name="scene_goal_success1">TOR!</string>
+    <string name="scene_goal_success2">Ball ist im Netz!</string>
+    <string name="scene_goal_fail1">Knapp daneben!! Die Gegner spielen den Ball zurück ins Mittelfeld</string>
+    <string name="scene_goal_fail2">Weit am Kasten vorbei!!</string>
+    <!--<scenes_attacking>-->
+    <string name="scene_attacking1">Der Angreifer %1s setzt sich mit einem Dribble gegen %2s durch und steht jetzt vor dem Tor!</string>
+    <string name="scene_attacking2">%1s zieht mit einem schnellen Dribble an %2s vorbei</string>
+    <!--<scenes_midfielding>-->
     <string name="scene_pass1">Pass durchs Mittelfeld</string>
     <string name="scene_pass2">Langer Pass in die Spitze</string>
     <string name="scene_pass3">Flanke nach vorne</string>
-    <string name="scene_goal_success1">TOR!</string>
-    <string name="scene_goal_success2">Ball ist im Netz!</string>
-    <string name="scene_goal_fail1">Knapp daneben!!</string>
-    <string name="scene_goal_fail2">Weit am Kasten vorbei!!</string>
+    <string name="scene_circulating">Der Ball zirkuliert in der Mitte</string>
+    <string name="scene_kickoff">Weiter geht\'s! Es steht %1s zu %2s</string>
     <!--<scenes_defending>-->
     <string name="scene_defending1">Ball gerät in den Strafraum …</string>
     <string name="scene_defender_block1">Sauber vom Verteidiger abgeräumt</string>

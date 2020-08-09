@@ -6,17 +6,15 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.android.f_project.MyDbHelper
 import com.android.f_project.R
-import com.android.f_project.datamodel.Player_model
-import com.android.f_project.datamodel.Team_model
+import com.android.f_project.datamodel.PlayerModel
+import com.android.f_project.datamodel.TeamModel
 import kotlinx.android.synthetic.main.activity_select_team.*
 
 class SelectTeamActivity : AppCompatActivity() {
 
-    private val teams = ArrayList<Team_model>()
+    private val teams = ArrayList<TeamModel>()
     private var counter: Int = 0
     private var counter2: Int = 1
-    private lateinit var selectedTeam: Team_model
-    private lateinit var selectedTeam2: Team_model
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +73,7 @@ class SelectTeamActivity : AppCompatActivity() {
 
     private fun getTeams() {
         teams.add(
-            Team_model(
+            TeamModel(
                 "1",
                 getString(R.string.team_bayern_muenchen),
                 "Germany",
@@ -85,7 +83,7 @@ class SelectTeamActivity : AppCompatActivity() {
             )
         )
         teams.add(
-            Team_model(
+            TeamModel(
                 "2",
                 getString(R.string.team_borussia_dortmund),
                 "Germany",
@@ -95,7 +93,7 @@ class SelectTeamActivity : AppCompatActivity() {
             )
         )
         teams.add(
-            Team_model(
+            TeamModel(
                 "3",
                 getString(R.string.team_liverpool),
                 "England",
@@ -105,7 +103,7 @@ class SelectTeamActivity : AppCompatActivity() {
             )
         )
         teams.add(
-            Team_model(
+            TeamModel(
                 "4",
                 getString(R.string.team_real_madrid),
                 "Spain",
@@ -115,7 +113,7 @@ class SelectTeamActivity : AppCompatActivity() {
             )
         )
         teams.add(
-            Team_model(
+            TeamModel(
                 "5",
                 getString(R.string.team_paris),
                 "France",
@@ -125,7 +123,7 @@ class SelectTeamActivity : AppCompatActivity() {
             )
         )
         teams.add(
-            Team_model(
+            TeamModel(
                 "6",
                 getString(R.string.team_manchester_city),
                 "England",
@@ -136,10 +134,10 @@ class SelectTeamActivity : AppCompatActivity() {
         )
     }
 
-    private fun sqlconnections(teamName: String): MutableList<Player_model> {
+    private fun sqlconnections(teamName: String): MutableList<PlayerModel> {
         val myDatabase = MyDbHelper(this).readableDatabase
-        val playerList = mutableListOf<Player_model>()
-        lateinit var playa: Player_model
+        val playerList = mutableListOf<PlayerModel>()
+        lateinit var playa: PlayerModel
         AsyncTask.execute {
             val cursor = myDatabase.rawQuery(
                 "SELECT _id,Name,Age,Nationality,\"Jersey Number\",Position,Overall,Dribbling,ShortPassing,Finishing,Interceptions,GKReflexes FROM data\n" +
@@ -162,7 +160,7 @@ class SelectTeamActivity : AppCompatActivity() {
                     val defending = cursor.getString(10)
                     val goalkeeping = cursor.getString(11)
                     playa =
-                        Player_model(
+                        PlayerModel(
                             id,
                             name,
                             age,
@@ -186,14 +184,14 @@ class SelectTeamActivity : AppCompatActivity() {
         return playerList
     }
 
-    private fun populateView(teamList: ArrayList<Team_model>) {
+    private fun populateView(teamList: ArrayList<TeamModel>) {
         val chosen = teamList[counter]
         team_name.text = chosen.name
         league_name.text = chosen.league
         chosen.logo_res?.let { team_logo.setImageResource(it) }
     }
 
-    private fun populateView2(teamList: ArrayList<Team_model>) {
+    private fun populateView2(teamList: ArrayList<TeamModel>) {
         val chosen = teamList[counter2]
         team_name2.text = chosen.name
         league_name2.text = chosen.league

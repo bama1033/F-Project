@@ -1,7 +1,7 @@
 package com.android.f_project.datamodel
 
-data class Scene_model(
+data class SceneModel(
     val time: String?,
     val content: String?,
-    val status: Status_model
+    val status: StatusModel
 )

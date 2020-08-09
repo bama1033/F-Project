@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Player_model(
+data class PlayerModel(
     val id: String?,
     val name: String?,
     val age: String?,

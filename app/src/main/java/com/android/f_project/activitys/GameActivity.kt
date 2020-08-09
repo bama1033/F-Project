@@ -11,71 +11,75 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.f_project.ListAdapter
-import com.android.f_project.R
-import com.android.f_project.datamodel.Scene_model
-import com.android.f_project.datamodel.Status_model
-import com.android.f_project.datamodel.Team_model
-import com.android.f_project.shuffle
+import com.android.f_project.*
+import com.android.f_project.datamodel.PlayerModel
+import com.android.f_project.datamodel.SceneModel
+import com.android.f_project.datamodel.StatusModel
+import com.android.f_project.datamodel.TeamModel
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_gamesimulation.*
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
-import kotlin.math.floor
-import com.android.f_project.GlobalVariable
 
 
 class GameActivity : AppCompatActivity() {
     private var scoreHome = 0
     private var scoreAway = 0
     private var gameTimer = 0
-    private val contentList = ArrayList<Scene_model>()
+    private val contentList = ArrayList<SceneModel>()
     private var timeToken = 0
     private var gameOverToken = false
     private var halfTimeToken = false
-    private lateinit var selectedTeam: Team_model
-    private lateinit var selectedTeam2: Team_model
-    private var gameStatus: Status_model = Status_model.Midfield
+    private lateinit var selectedTeamHome: TeamModel
+    private lateinit var selectedTeamAway: TeamModel
+    private var gameStatus: StatusModel = StatusModel.Midfield
     private lateinit var adapter: ListAdapter
     private lateinit var rv: RecyclerView
     private lateinit var mDocRef: DocumentReference
+    private var attackingPlayer: PlayerModel = getDefaultPlayer()
 
 /*
-        TODO -Implementing Spielverlauf ✔
-        TODO -Implementing 0..90 ✔
-        TODO States(wo sind wir im Feld) ✔
-        TODO -Implementing BaseLogic ✔
-        TODO -Implementing PlayerStats ✔
+        TODO ADD STATUS-Model Anst0ss
         TODO MakeTeams interact (GK Def MFs,Atk und suche einen random pro Scene aus)
         TODO -Implementing Strategy
+                als strategie passen oder dribbeln, dann entscheidet sich mit was gerollt wird
+                anzahl der spieler umso mehr spieler umso besser verteidigung
 
-        TODO -Teamselector UI ✔
-        TODO -Mainmenu(welcomescreen, modeselect, highscore, exit) ✔
-        TODO -adding Teams  ---> API? --> SQL ✔
-        TODO -adding Players ---> API? --> SQL ✔
-        TODO -Firebase-Anbindung um Highscore zu speichern ✔
+        TODO -Firebase-Anbindung um Highscore zu speichern ✔ --> make it usefull compare data and write userBYid? oder google acc?
+        TODO Intro screen T1 vs T2 Stars being calculated acc to players selected, also best player presented by overall
+
         TODO -Animationen/Screens für actions
         TODO -Gamemodes (Create a Team_model, Online)
+        TODO Progressbar of current gamestatus, like progressbar
 
-        TODO-NEXT Create Auftsellung Sturm mittelfeld Def ( MF vs MF, Attacker vs Def/GK) ✔
-        TODO expand playerstats by skillmoves,defending,passing,gk,strike ✔
-        TODO playercards ✔
-        als strategie passen oder dribbeln, dann entscheidet sich mit was gerollt wird
-        +anzahl der spieler umso mehr spieler umso besser verteidigung
+        Done:
+        -Implementing Spielverlauf ✔
+        -Implementing 0..90 ✔
+        States(wo sind wir im Feld) ✔
+        -Implementing BaseLogic ✔
+        -Implementing PlayerStats ✔
+        -Teamselector UI ✔
+        -Mainmenu(welcomescreen, modeselect, highscore, exit) ✔
+        -adding Teams  ---> API? --> SQL ✔
+        -adding Players ---> API? --> SQL ✔
+        Add Swipe functionality  ✔
+        NEXT Create Auftsellung Sturm mittelfeld Def ( MF vs MF, Attacker vs Def/GK) ✔
+        expand playerstats by skillmoves,defending,passing,gk,strike ✔
+        playercards ✔
  */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gamesimulation)
 
-        selectedTeam = intent.getParcelableExtra<Team_model>("selectedTeam")
-        selectedTeam2 = intent.getParcelableExtra<Team_model>("selectedTeam2")
-        setTeams(
-            selectedTeam,
-            selectedTeam2
-        )
+        selectedTeamHome = intent.getParcelableExtra<TeamModel>("selectedTeam")
+        selectedTeamAway = intent.getParcelableExtra<TeamModel>("selectedTeam2")
+        setTeams(selectedTeamHome, selectedTeamAway)
+        val w = windowManager
+        val b = selectedTeamHome.getAttackingPlayerText()
 
         rv = findViewById(R.id.game_course)
 
@@ -88,6 +92,7 @@ class GameActivity : AppCompatActivity() {
         interaction_two.setOnClickListener {
             interactionTwo()
         }
+
         rv.layoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         rv.adapter = adapter
         startGame()
@@ -114,7 +119,7 @@ class GameActivity : AppCompatActivity() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    private fun setTeams(team_one: Team_model, team_two: Team_model) {
+    private fun setTeams(team_one: TeamModel, team_two: TeamModel) {
         setViewText(team_home, team_one.name)
         setViewText(team_away, team_two.name)
         setImage(image_home, team_one.logo_res)
@@ -195,89 +200,116 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun addSceneSpecial(special: String) {
-        contentList.add(Scene_model(gameTimer.toString(), special, gameStatus))
+        contentList.add(SceneModel(gameTimer.toString(), special, gameStatus))
         updateTime()
         updateAdapter()
     }
 
     private fun addScene(special: String = "special") {
         animateClock()
-        lateinit var content: String
+        var content = ""
         val dice = shuffle()
         when (gameStatus) {
-            Status_model.Midfield -> {
+            StatusModel.Midfield -> {
                 content = getString(getPassingText())
                 when (dice) {
                     in 1..5 -> {
-                        gameStatus = Status_model.Defense
+                        gameStatus = StatusModel.Defense
                     }
                     in 6..9 -> {
-                        gameStatus = Status_model.Attack
+                        gameStatus = StatusModel.Attack
                     }
                     10 -> {
-                        gameStatus = Status_model.Midfield
-                        //Ball zirtkuliert in der mitte
+                        content = getString(R.string.scene_circulating)
+                        gameStatus = StatusModel.Midfield
                     }
                 }
             }
-            Status_model.Attack -> {
-                content = getString(getAttackingText())
-                when (shuffle()) {
-                    in 1..5 -> {
-
-                        val playaname = getAttackingPlayerText()
-                        content =
-                            "$content $playaname mit dem " + getString(R.string.scene_goal_success1)
-                        updateScore("home")
-
-                    }
-                    in 6..10 -> {
-                        content = content + " " + getString(R.string.scene_goal_fail1)
-                    }
+            StatusModel.Attack -> {
+                val contentText = getAttackingText()
+                attackingPlayer = selectedTeamHome.getAttackingPlayer()
+                val defendingPlayer = selectedTeamAway.getDefendingPlayer()
+                if (doesCalculation(
+                        attackingPlayer.shooting,
+                        attackingPlayer,
+                        defendingPlayer.defending,
+                        defendingPlayer
+                    )
+                ) {
+                    content =
+                        getString(
+                            contentText,
+                            attackingPlayer.name,
+                            defendingPlayer.name
+                        )
+                    gameStatus = StatusModel.Shot
+                } else {
+                    //TODO add scene defending success
+                    content = content + " " + getString(R.string.scene_defender_block1)
+                    gameStatus = StatusModel.Midfield
                 }
-                gameStatus = Status_model.Midfield
             }
-            Status_model.Defense -> {
+            StatusModel.Shot -> {
+                content = getString(getShootingText())
+                val goalkeepingPlayer = selectedTeamAway.getGKPlayer()
+                if (doesCalculation(
+                        attackingPlayer.shooting,
+                        attackingPlayer,
+                        goalkeepingPlayer.goalkeeping,
+                        goalkeepingPlayer
+                    )
+                ) {
+                    content =
+                        "$content ${attackingPlayer.name} mit dem " + getString(R.string.scene_goal_success1)
+                    updateScore("home")
+                    gameStatus = StatusModel.KickOff
+                } else {
+                    content = content + " " + getString(R.string.scene_goal_fail1)
+                    gameStatus = StatusModel.Midfield
+                }
+            }
+            StatusModel.Defense -> {
                 content = getString(R.string.scene_defending1)
                 when (shuffle()) {
                     in 1..5 -> {
                         content = content + " " + getString(R.string.scene_opponent_goal1)
                         updateScore("away")
+                        gameStatus = StatusModel.KickOff
                     }
                     in 6..10 -> {
                         content = content + " " + getString(getDefendingText())
+                        gameStatus = StatusModel.Midfield
                     }
                 }
-                gameStatus = Status_model.Midfield
+            }
+            StatusModel.KickOff -> {
+                content =
+                    getString(
+                        R.string.scene_kickoff,
+                        scoreHome.toString(),
+                        scoreAway.toString()
+                    )
+                gameStatus = StatusModel.Midfield
             }
         }
-        contentList.add(Scene_model(gameTimer.toString(), content, gameStatus))
+        contentList.add(SceneModel(gameTimer.toString(), content, gameStatus))
         updateTime()
         updateAdapter()
     }
 
-    private fun getAttackingPlayerText(): String? {
-        val noOfPlayersSelected2 = selectedTeam.players
 
-        val contains =
-            noOfPlayersSelected2.filter { it.position in GlobalVariable.listAttackingPositions }
-        val noOfPlayersSelected = contains.size.toDouble()
-        return contains[getRandomInt(noOfPlayersSelected)].name
-    }
-
-    private fun getRandomInt(numba: Double): Int {
-        var randomNumba = floor(Math.random() * floor(numba)).toInt()
-        if (randomNumba == 0) {
-            randomNumba = 1
-        }
-        return randomNumba
-    }
-
-    private fun getAttackingText(): Int {
+    private fun getShootingText(): Int {
         val attackingTextList: MutableList<Int> = ArrayList()
         attackingTextList.add(R.string.scene_shot1)
         attackingTextList.add(R.string.scene_shot2)
         attackingTextList.add(R.string.scene_shot3)
+        return attackingTextList.random()
+    }
+
+    private fun getAttackingText(): Int {
+        val attackingTextList: MutableList<Int> = ArrayList()
+        attackingTextList.add(R.string.scene_attacking1)
+        attackingTextList.add(R.string.scene_attacking2)
         return attackingTextList.random()
     }
 
@@ -315,8 +347,8 @@ class GameActivity : AppCompatActivity() {
         addSceneSpecial(
             getString(
                 R.string.scene_beginning,
-                selectedTeam.name,
-                selectedTeam2.name
+                selectedTeamHome.name,
+                selectedTeamAway.name
             )
         )
     }

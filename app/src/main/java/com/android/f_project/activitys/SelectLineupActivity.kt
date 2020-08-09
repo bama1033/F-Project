@@ -3,14 +3,15 @@ package com.android.f_project.activitys
 import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
+import android.util.DisplayMetrics
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.*
 import androidx.appcompat.app.AppCompatActivity
-import com.android.f_project.GlobalVariable
 import com.android.f_project.R
-import com.android.f_project.datamodel.Formation_model
-import com.android.f_project.datamodel.Team_model
+import com.android.f_project.datamodel.FormationModel
+import com.android.f_project.datamodel.TeamModel
 import kotlinx.android.synthetic.main.activity_lineup.*
 
 
@@ -19,34 +20,50 @@ class SelectLineupActivity : AppCompatActivity() {
     private val formations = ArrayList<androidx.constraintlayout.widget.Group>()
     private var selectedFormation: Int = 0
 
-    private var formation0: Formation_model = Formation_model("0", "Hängende Spitze", "2-3-1-4")
-    private var formation1: Formation_model = Formation_model("1", "Standard", "3-1-2-4")
-    private var formation2: Formation_model = Formation_model("2", "Bollwerk", "1-3-1-5")
-    private var formation3: Formation_model = Formation_model("3", "Balanced", "1-2-4-3")
-    private var listOfFormations = mutableListOf(formation0,formation1, formation2, formation3)
+    private var formation0: FormationModel = FormationModel("0", "Hängende Spitze", "2-3-1-4")
+    private var formation1: FormationModel = FormationModel("1", "Standard", "3-1-2-4")
+    private var formation2: FormationModel = FormationModel("2", "Bollwerk", "1-3-1-5")
+    private var formation3: FormationModel = FormationModel("3", "Balanced", "1-2-4-3")
+    private var listOfFormations = mutableListOf(formation0, formation1, formation2, formation3)
     //    changeFormation(){
-    //        2-3-1-4
-    //        3-1-2-4
-    //        1-3-1-5
-    //        1-2-4-3
-
     //        1-2-3-4
     //        2-1-2-5
     //        1-1-3-5
     //        1-3-2-4
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lineup)
+
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val halfHeight = displayMetrics.heightPixels.div(2)
+
+        constraintlayout.setOnTouchListener(object : OnSwipeTouchListener() {
+            override fun onSwipeLeft(y: Float) {
+                if (y >= halfHeight) {
+
+                    Log.e("ViewSwipe", "bin unten")
+
+                } else {
+                    Log.e("ViewSwipe", "bin open")
+                }
+                nextFormation()
+            }
+
+            override fun onSwipeRight(y: Float) {
+                previousFormation()
+            }
+        })
+
 
         formations.add(group0)
         formations.add(group1)
         formations.add(group2)
         formations.add(group3)
-        GlobalVariable.listMidfieldingPositions
 
         toggleView()
+
         interaction_two_lineup.setOnClickListener {
             startGame()
         }
@@ -89,8 +106,8 @@ class SelectLineupActivity : AppCompatActivity() {
 
     private fun startGame() {
         this.startActivity(Intent(this, GameActivity::class.java).apply {
-            putExtra("selectedTeam", intent.getParcelableExtra<Team_model>("selectedTeam"))
-            putExtra("selectedTeam2", intent.getParcelableExtra<Team_model>("selectedTeam2"))
+            putExtra("selectedTeam", intent.getParcelableExtra<TeamModel>("selectedTeam"))
+            putExtra("selectedTeam2", intent.getParcelableExtra<TeamModel>("selectedTeam2"))
         })
     }
 
@@ -118,7 +135,6 @@ class SelectLineupActivity : AppCompatActivity() {
 
     //First select Aufstellung
     //Then select players(init highest rated players take place)
-    //Then safe
     //TODO    Implement button that switches between playername -- number == position
 }
 
