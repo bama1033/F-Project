@@ -3,8 +3,6 @@ package com.android.f_project.activitys
 import android.content.ClipData
 import android.content.Intent
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.*
@@ -39,6 +37,7 @@ class SelectLineupActivity : AppCompatActivity() {
             override fun onSwipeLeft(y: Float) {
                 nextFormation()
             }
+
             override fun onSwipeRight(y: Float) {
                 previousFormation()
             }
@@ -96,6 +95,7 @@ class SelectLineupActivity : AppCompatActivity() {
         this.startActivity(Intent(this, GameActivity::class.java).apply {
             putExtra("selectedTeam", intent.getParcelableExtra<TeamModel>("selectedTeam"))
             putExtra("selectedTeam2", intent.getParcelableExtra<TeamModel>("selectedTeam2"))
+            putExtra("highscore", intent.getIntExtra("highscore",0))
         })
     }
 

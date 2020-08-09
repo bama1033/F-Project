@@ -542,14 +542,12 @@
             android:fontFamily="@font/coming_soon"
             android:text="Aufstellung"
             android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="@color/colorTextGrey"
             android:textSize="24sp"
             android:textStyle="bold"
             android:typeface="monospace"
             app:layout_constraintBottom_toTopOf="@+id/guideline_top"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
     <TextView

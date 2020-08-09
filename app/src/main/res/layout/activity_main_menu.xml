@@ -69,10 +69,25 @@
             android:textColor="@color/colorTextGrey"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/button_quit"
+            app:layout_constraintBottom_toTopOf="@id/button_settings"
             app:layout_constraintEnd_toStartOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/button_start" />
+
+    <Button
+            android:id="@+id/button_settings"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_black_green"
+            android:fontFamily="@font/waiting_for_the_sunrise"
+            android:text="@string/settings"
+            android:textColor="@color/colorTextGrey"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/button_quit"
+            app:layout_constraintEnd_toStartOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/button_scores" />
 
     <Button
             android:id="@+id/button_quit"
@@ -84,7 +99,7 @@
             android:textColor="@color/colorTextGrey"
             android:textSize="30sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/guideline_bottom"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/guideline_end"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintTop_toBottomOf="@id/button_scores" />

@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/gradient_green_black">
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="50dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="50dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="50dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="50dp" />
+
+    <TextView
+            android:id="@+id/Title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/coming_soon"
+            android:orientation="horizontal"
+            android:text="@string/settings"
+            android:textAlignment="center"
+            android:textColor="@color/colorTextGrey"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/guideline_top" />
+
+    <TextView
+            android:id="@+id/Account"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/coming_soon"
+            android:orientation="horizontal"
+            android:text="Current AccountID"
+            android:textAlignment="center"
+            android:textColor="@color/colorTextGrey"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/Account_Textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/Title" />
+
+
+    <EditText
+            android:id="@+id/Account_Textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:focusable="false"
+            android:hint="AccountId"
+            android:inputType="none"
+            android:textAlignment="center"
+            android:textIsSelectable="true"
+            app:layout_constraintBottom_toTopOf="@id/Hint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/Account" />
+
+    <TextView
+            android:id="@+id/Hint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/coming_soon"
+            android:orientation="horizontal"
+            android:text="Restore with old AccountID"
+            android:textAlignment="center"
+            android:textColor="@color/colorTextGrey"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toTopOf="@id/AccountRestore_Textview"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/Account_Textview" />
+
+    <EditText
+            android:id="@+id/AccountRestore_Textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="5"
+            android:hint="AccountID"
+            android:inputType="textPersonName"
+            android:textAlignment="center"
+            app:layout_constraintBottom_toTopOf="@id/Restore_Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/Hint" />
+
+    <Button
+            android:id="@+id/Restore_Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/gradient_black_green"
+            android:fontFamily="@font/waiting_for_the_sunrise"
+            android:paddingHorizontal="@dimen/horizontal_margin"
+            android:text="Restore"
+            android:textColor="@color/colorTextGrey"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintTop_toBottomOf="@id/AccountRestore_Textview" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

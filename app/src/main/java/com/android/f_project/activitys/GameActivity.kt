@@ -1,5 +1,6 @@
 package com.android.f_project.activitys
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Animatable
 import android.os.Bundle
@@ -35,6 +36,7 @@ class GameActivity : AppCompatActivity() {
     private var halfTimeToken = false
     private lateinit var selectedTeamHome: TeamModel
     private lateinit var selectedTeamAway: TeamModel
+    private var highscore = 0
     private var gameStatus: StatusModel = StatusModel.Midfield
     private lateinit var adapter: ListAdapter
     private lateinit var rv: RecyclerView
@@ -42,20 +44,22 @@ class GameActivity : AppCompatActivity() {
     private var attackingPlayer: PlayerModel = getDefaultPlayer()
 
 /*
-        TODO ADD STATUS-Model Anst0ss
         TODO MakeTeams interact (GK Def MFs,Atk und suche einen random pro Scene aus)
         TODO -Implementing Strategy
                 als strategie passen oder dribbeln, dann entscheidet sich mit was gerollt wird
                 anzahl der spieler umso mehr spieler umso besser verteidigung
 
-        TODO -Firebase-Anbindung um Highscore zu speichern ✔ --> make it usefull compare data and write userBYid? oder google acc?
         TODO Intro screen T1 vs T2 Stars being calculated acc to players selected, also best player presented by overall
+        TODO Progressbar of current gamestatus, like progressbar
+        TODO Add Settings paypal? generate UserID
 
         TODO -Animationen/Screens für actions
         TODO -Gamemodes (Create a Team_model, Online)
-        TODO Progressbar of current gamestatus, like progressbar
+        TODO Sidedrawer bei lineup und taktik view
 
         Done:
+        -Firebase-Anbindung um Highscore zu speichern ✔ --> make it usefull compare data and write userBYid? oder google acc?
+        ADD STATUS-Model Anst0ss ✔
         -Implementing Spielverlauf ✔
         -Implementing 0..90 ✔
         States(wo sind wir im Feld) ✔
@@ -77,9 +81,9 @@ class GameActivity : AppCompatActivity() {
 
         selectedTeamHome = intent.getParcelableExtra<TeamModel>("selectedTeam")
         selectedTeamAway = intent.getParcelableExtra<TeamModel>("selectedTeam2")
+        highscore = intent.getIntExtra("highscore", 0)
+
         setTeams(selectedTeamHome, selectedTeamAway)
-        val w = windowManager
-        val b = selectedTeamHome.getAttackingPlayerText()
 
         rv = findViewById(R.id.game_course)
 
@@ -357,24 +361,34 @@ class GameActivity : AppCompatActivity() {
         addSceneSpecial(getString(R.string.scene_ending))
         interaction_one.visibility = View.VISIBLE
         interaction_two.visibility = View.VISIBLE
-//        updateAdapter()
+        updateAdapter()
         saveStats()
     }
 
     private fun saveStats() {
-        val dataSave = HashMap<String, String>()
-        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
-        val currentDate = sdf.format(Date())
+        if (highscore < scoreHome) {
+            val dataSave = HashMap<String, String>()
+            val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+            val currentDate = sdf.format(Date())
 
-        dataSave["User"] = "Me"
-        dataSave["Date"] = currentDate.toString()
-        dataSave["Dortmund"] = counter_home.text.toString()
-        dataSave["Bayern"] = counter_away.text.toString()
-        mDocRef = FirebaseFirestore.getInstance().document("Score/HighScores")
-        mDocRef.set(dataSave as Map<String, Any>).addOnSuccessListener {
-            Log.d("FirebaseManager", "Upload Successful")
-        }.addOnFailureListener {
-            Log.d("FirebaseManager", "Upload hat nicht geklappt")
+            val sharedPref = this.getSharedPreferences("AccountId", Context.MODE_PRIVATE) ?: return
+            val highScore = sharedPref.getString("AccountId", "ERROR")
+            dataSave["User"] = highScore
+            dataSave["Date"] = currentDate.toString()
+            dataSave["HomeTeamCounter"] = counter_home.text.toString()
+            dataSave["HomeTeam"] = selectedTeamHome.name.toString()
+            dataSave["AwayTeamCounter"] = counter_away.text.toString()
+            dataSave["AwayTeam"] = selectedTeamAway.name.toString()
+            if (highScore == "ERROR") {
+                Log.d("FirebaseManager", "Problem mit der AccountId")
+            } else {
+                mDocRef = FirebaseFirestore.getInstance().document("Score/$highScore")
+                mDocRef.set(dataSave as Map<String, Any>).addOnSuccessListener {
+                    Log.d("FirebaseManager", "Upload Successful")
+                }.addOnFailureListener {
+                    Log.d("FirebaseManager", "Upload hat nicht geklappt")
+                }
+            }
         }
     }
 

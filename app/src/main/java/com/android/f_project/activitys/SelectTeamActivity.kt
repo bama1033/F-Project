@@ -14,16 +14,19 @@ import kotlinx.android.synthetic.main.activity_select_team.*
 class SelectTeamActivity : AppCompatActivity() {
 
     private val teams = ArrayList<TeamModel>()
-    private var counter: Int = 0
-    private var counter2: Int = 1
+    private var teamCounter: Int = 0
+    private var teamCounter2: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_team)
+
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         val halfHeight = displayMetrics.heightPixels.div(2)
+
         getTeams()
+
         if (teams.isNotEmpty()) {
             populateView(teams)
             populateView2(teams)
@@ -72,26 +75,26 @@ class SelectTeamActivity : AppCompatActivity() {
     }
 
     private fun previousTeam() {
-        if (counter - 1 >= 0) counter -= 1
-        else counter = teams.size - 1
+        if (teamCounter - 1 >= 0) teamCounter -= 1
+        else teamCounter = teams.size - 1
         populateView(teams)
     }
 
     private fun nextTeam() {
-        if (counter + 1 < teams.size && counter + 1 >= 0) counter += 1
-        else counter = 0
+        if (teamCounter + 1 < teams.size && teamCounter + 1 >= 0) teamCounter += 1
+        else teamCounter = 0
         populateView(teams)
     }
 
     private fun previousTeam2() {
-        if (counter2 - 1 >= 0) counter2 -= 1
-        else counter2 = teams.size - 1
+        if (teamCounter2 - 1 >= 0) teamCounter2 -= 1
+        else teamCounter2 = teams.size - 1
         populateView2(teams)
     }
 
     private fun nextTeam2() {
-        if (counter2 + 1 < teams.size && counter2 + 1 >= 0) counter2 += 1
-        else counter2 = 0
+        if (teamCounter2 + 1 < teams.size && teamCounter2 + 1 >= 0) teamCounter2 += 1
+        else teamCounter2 = 0
         populateView2(teams)
     }
 
@@ -210,14 +213,14 @@ class SelectTeamActivity : AppCompatActivity() {
     }
 
     private fun populateView(teamList: ArrayList<TeamModel>) {
-        val chosen = teamList[counter]
+        val chosen = teamList[teamCounter]
         team_name.text = chosen.name
         league_name.text = chosen.league
         chosen.logo_res?.let { team_logo.setImageResource(it) }
     }
 
     private fun populateView2(teamList: ArrayList<TeamModel>) {
-        val chosen = teamList[counter2]
+        val chosen = teamList[teamCounter2]
         team_name2.text = chosen.name
         league_name2.text = chosen.league
         chosen.logo_res?.let { team_logo2.setImageResource(it) }
@@ -225,8 +228,9 @@ class SelectTeamActivity : AppCompatActivity() {
 
     private fun selectLineup() {
         this.startActivity(Intent(this, SelectLineupActivity::class.java).apply {
-            putExtra("selectedTeam", teams[counter])
-            putExtra("selectedTeam2", teams[counter2])
+            putExtra("selectedTeam", teams[teamCounter])
+            putExtra("selectedTeam2", teams[teamCounter2])
+            putExtra("highscore", intent.getIntExtra("highscore",0))
         })
     }
 }
