@@ -3,6 +3,7 @@ package com.android.f_project.activitys
 import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
+import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
 import com.android.f_project.MyDbHelper
 import com.android.f_project.R
@@ -19,6 +20,9 @@ class SelectTeamActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_team)
+        val displayMetrics = DisplayMetrics()
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        val halfHeight = displayMetrics.heightPixels.div(2)
         getTeams()
         if (teams.isNotEmpty()) {
             populateView(teams)
@@ -44,6 +48,27 @@ class SelectTeamActivity : AppCompatActivity() {
         select_button.setOnClickListener {
             selectLineup()
         }
+
+        constraintlayout_selectteam.setOnTouchListener(object : OnSwipeTouchListener() {
+            override fun onSwipeLeft(y: Float) {
+                if (y >= halfHeight) {
+                    nextTeam2()
+
+                } else {
+                    nextTeam()
+
+                }
+            }
+
+            override fun onSwipeRight(y: Float) {
+                if (y >= halfHeight) {
+                    previousTeam2()
+
+                } else {
+                    previousTeam()
+                }
+            }
+        })
     }
 
     private fun previousTeam() {

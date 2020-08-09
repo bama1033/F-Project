@@ -35,22 +35,10 @@ class SelectLineupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lineup)
 
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        val halfHeight = displayMetrics.heightPixels.div(2)
-
-        constraintlayout.setOnTouchListener(object : OnSwipeTouchListener() {
+        constraintlayout_lineup.setOnTouchListener(object : OnSwipeTouchListener() {
             override fun onSwipeLeft(y: Float) {
-                if (y >= halfHeight) {
-
-                    Log.e("ViewSwipe", "bin unten")
-
-                } else {
-                    Log.e("ViewSwipe", "bin open")
-                }
                 nextFormation()
             }
-
             override fun onSwipeRight(y: Float) {
                 previousFormation()
             }

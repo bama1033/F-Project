@@ -116,7 +116,7 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun interactionTwo() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        recreate()
     }
 
     private fun setTeams(team_one: TeamModel, team_two: TeamModel) {
