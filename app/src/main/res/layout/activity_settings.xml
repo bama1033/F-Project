@@ -100,6 +100,7 @@
             android:ems="5"
             android:hint="AccountID"
             android:inputType="textPersonName"
+            android:maxLength="8"
             android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@id/Restore_Button"
             app:layout_constraintEnd_toEndOf="parent"

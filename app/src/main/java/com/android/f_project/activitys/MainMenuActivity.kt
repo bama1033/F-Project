@@ -50,17 +50,14 @@ class MainMenuActivity : AppCompatActivity() {
     private fun getHighscore() {
         mDocRef = FirebaseFirestore.getInstance().document("Score/$highScore")
         mDocRef.get().addOnSuccessListener { result ->
-            if (result != null) {
-                Log.d("FirebaseManager", "Data: ${result.data}")
-                highestGoals = result.data?.get("HomeTeamCounter").toString()
-            }
+            Log.d("FirebaseManager", "Data: ${result.data}")
+            highestGoals = result.data?.get("HomeTeamCounter").toString()
         }
     }
 
     private fun addAccountId(sharedPref: SharedPreferences) {
-        val x = generateAccountID()
         with(sharedPref.edit()) {
-            putString("AccountId", x)
+            putString("AccountId", generateAccountID())
             commit()
         }
     }
