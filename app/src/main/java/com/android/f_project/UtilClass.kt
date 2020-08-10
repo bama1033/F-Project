@@ -9,6 +9,8 @@ fun shuffle(): Int {
     return (1..10).shuffled().first()
 }
 
+val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+
 object GlobalVariable {
     val listAttackingPositions =
         mutableListOf("ST", "LAM", "RAM", "CAM", "RM", "LM", "LF", "RF", "CF")
@@ -66,11 +68,21 @@ fun getDefaultPlayer(): PlayerModel {
 }
 
 fun generateAccountID(): String {
-    val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
     return (1..8)
         .map { Random.nextInt(0, charPool.size) }
         .map(charPool::get)
         .joinToString("")
+}
+
+fun checkPlausibleAccountId(item: String): Boolean {
+    if (item.length == 8) {
+        item.forEach { letter ->
+            if (letter !in charPool) {
+                return false
+            }
+        }
+        return true
+    } else return false
 }
 
 fun doesCalculation(

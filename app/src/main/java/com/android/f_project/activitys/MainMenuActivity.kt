@@ -16,8 +16,9 @@ import kotlinx.android.synthetic.main.activity_main_menu.*
 class MainMenuActivity : AppCompatActivity() {
 
     private lateinit var mDocRef: DocumentReference
-    private var highScore: String? = ""
-    var highestGoals: String? = "0"
+    private var accId: String = ""
+    var highestGoals: Int? = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,15 +26,11 @@ class MainMenuActivity : AppCompatActivity() {
         val sharedPref = this.getSharedPreferences(
             "AccountId", Context.MODE_PRIVATE
         ) ?: return
-        highScore = sharedPref.getString("AccountId", "")
-        if (highScore?.isEmpty()!!) {
-            addAccountId(sharedPref)
-        }
-        getHighscore()
+        getAccount(sharedPref)
 
         button_start.setOnClickListener {
             this.startActivity(Intent(this, SelectTeamActivity::class.java).apply {
-                putExtra("highscore", highestGoals?.toInt())
+                putExtra("highscore", highestGoals)
             })
         }
         button_scores.setOnClickListener {
@@ -47,11 +44,26 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
+    private fun getAccount(sharedPref: SharedPreferences) {
+        accId = sharedPref.getString("AccountId", "")!!
+        if (accId.isEmpty()) {
+            addAccountId(sharedPref)
+        }
+        getHighscore()
+    }
+
     private fun getHighscore() {
-        mDocRef = FirebaseFirestore.getInstance().document("Score/$highScore")
-        mDocRef.get().addOnSuccessListener { result ->
-            Log.d("FirebaseManager", "Data: ${result.data}")
-            highestGoals = result.data?.get("HomeTeamCounter").toString()
+        if (accId !== "") {
+//        val database = FirebaseFirestore.getInstance()
+//        val mDocRef2 = database.collection("mylist")
+//            mDocRef = mDocRef2.document(accId)
+            mDocRef = FirebaseFirestore.getInstance().document("Score/$accId")
+            mDocRef.get().addOnSuccessListener { result ->
+                Log.d("FirebaseManager", "Data: ${result.data}")
+                if (result.data?.get("HomeTeamCounter").toString().isNullOrEmpty()) {
+                    highestGoals = (result.data?.get("HomeTeamCounter") as String).toInt()
+                }
+            }
         }
     }
 
@@ -62,12 +74,20 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        val sharedPref = this.getSharedPreferences(
+            "AccountId", Context.MODE_PRIVATE
+        ) ?: return
+        getAccount(sharedPref)
+    }
+
     override fun onBackPressed() {
         this.finishAffinity()
     }
 
     private fun showHighscore() {
-        if (highScore.equals("") || highScore.equals("ERROR")) {
+        if (accId == "" || accId == "ERROR") {
             Log.w("FirebaseManager", "Error with AccountId")
             Toast.makeText(
                 this,
@@ -75,7 +95,7 @@ class MainMenuActivity : AppCompatActivity() {
                 Toast.LENGTH_SHORT
             ).show()
         } else {
-            mDocRef = FirebaseFirestore.getInstance().document("Score/$highScore")
+            mDocRef = FirebaseFirestore.getInstance().document("Score/$accId")
             Toast.makeText(
                 this,
                 "Fetching Highscores...",

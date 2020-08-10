@@ -56,6 +56,7 @@ class GameActivity : AppCompatActivity() {
         TODO -Animationen/Screens für actions
         TODO -Gamemodes (Create a Team_model, Online)
         TODO Sidedrawer bei lineup und taktik view
+        TODO Bugfix:Invalid document reference. Document references must have an even number of segments, but mylist has 1
 
         Done:
         -Firebase-Anbindung um Highscore zu speichern ✔ --> make it usefull compare data and write userBYid? oder google acc?
@@ -79,8 +80,8 @@ class GameActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gamesimulation)
 
-        selectedTeamHome = intent.getParcelableExtra<TeamModel>("selectedTeam")
-        selectedTeamAway = intent.getParcelableExtra<TeamModel>("selectedTeam2")
+        selectedTeamHome = intent.getParcelableExtra("selectedTeam")
+        selectedTeamAway = intent.getParcelableExtra("selectedTeam2")
         highscore = intent.getIntExtra("highscore", 0)
 
         setTeams(selectedTeamHome, selectedTeamAway)
@@ -373,7 +374,7 @@ class GameActivity : AppCompatActivity() {
 
             val sharedPref = this.getSharedPreferences("AccountId", Context.MODE_PRIVATE) ?: return
             val highScore = sharedPref.getString("AccountId", "ERROR")
-            dataSave["User"] = highScore
+            dataSave["User"] = highScore.toString()
             dataSave["Date"] = currentDate.toString()
             dataSave["HomeTeamCounter"] = counter_home.text.toString()
             dataSave["HomeTeam"] = selectedTeamHome.name.toString()

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.f_project.R
+import com.android.f_project.checkPlausibleAccountId
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
@@ -17,29 +18,32 @@ class SettingsActivity : AppCompatActivity() {
         val sharedPref = this.getSharedPreferences("AccountId", Context.MODE_PRIVATE) ?: return
         val highScore = sharedPref.getString("AccountId", "ERROR")
 
-        //TODO CHECK IF ACCID IS PLAUSIBLE E.. CONSISTS ONLY OF NUMBER CHARS 8 long AND NOTHIGN ELSE
         Account_Textview.setText(highScore)
 
         Restore_Button.setOnClickListener {
             if (clicked) {
                 if (AccountRestore_Textview.text.isNullOrEmpty())
-                    Toast.makeText(
-                        this,
-                        "Field is empty!",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    longToast("Field is empty!")
                 else {
-                    replaceAccountID(sharedPref)
+                    if (checkPlausibleAccountId(AccountRestore_Textview.text.toString()))
+                        replaceAccountID(sharedPref)
+                    else {
+                        longToast("Entered AccountId is not valid(8 letters long/only letters and number)")
+                    }
                 }
             } else {
-                Toast.makeText(
-                    this,
-                    "Are u sure u want to restore old Account? Press Button again",
-                    Toast.LENGTH_LONG
-                ).show()
+                longToast("Are u sure u want to restore old Account? Press Button again")
                 clicked = true
             }
         }
+    }
+
+    private fun longToast(text: String) {
+        Toast.makeText(
+            this,
+            text,
+            Toast.LENGTH_LONG
+        ).show()
     }
 
     private fun replaceAccountID(sharedPref: SharedPreferences) {
