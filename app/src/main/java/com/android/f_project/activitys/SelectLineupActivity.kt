@@ -7,8 +7,12 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.View.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.AppCompatTextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.view.children
 import com.android.f_project.R
 import com.android.f_project.datamodel.FormationModel
+import com.android.f_project.datamodel.PlayerModel
 import com.android.f_project.datamodel.TeamModel
 import kotlinx.android.synthetic.main.activity_lineup.*
 
@@ -22,6 +26,7 @@ class SelectLineupActivity : AppCompatActivity() {
     private var formation1: FormationModel = FormationModel("1", "Standard", "3-1-2-4")
     private var formation2: FormationModel = FormationModel("2", "Bollwerk", "1-3-1-5")
     private var formation3: FormationModel = FormationModel("3", "Balanced", "1-2-4-3")
+    private lateinit var selectedTeamHome: TeamModel
     private var listOfFormations = mutableListOf(formation0, formation1, formation2, formation3)
     //    changeFormation(){
     //        1-2-3-4
@@ -29,9 +34,21 @@ class SelectLineupActivity : AppCompatActivity() {
     //        1-1-3-5
     //        1-3-2-4
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lineup)
+        selectedTeamHome = intent.getParcelableExtra("selectedTeam")
+
+        val player = selectedTeamHome.players.take(11)
+        formations.add(group0)
+        formations.add(group1)
+        formations.add(group2)
+        formations.add(group3)
+
+        toggleView()
+
+        populateViews(player)
 
         constraintlayout_lineup.setOnTouchListener(object : OnSwipeTouchListener() {
             override fun onSwipeLeft(y: Float) {
@@ -42,14 +59,9 @@ class SelectLineupActivity : AppCompatActivity() {
                 previousFormation()
             }
         })
-
-
-        formations.add(group0)
-        formations.add(group1)
-        formations.add(group2)
-        formations.add(group3)
-
-        toggleView()
+        interaction_one_lineup.setOnClickListener {
+            swapNameNumber()
+        }
 
         interaction_two_lineup.setOnClickListener {
             startGame()
@@ -80,12 +92,60 @@ class SelectLineupActivity : AppCompatActivity() {
         toggleView()
     }
 
+    private fun swapNameNumber() {
+        for (i in 0 until constraintlayout_lineup.childCount) {
+            val v = constraintlayout_lineup.getChildAt(i)
+            if (v is ConstraintLayout) {
+                var boolTextViewNumberNameSwitch = true
+                v.children.forEach {
+                    if (it is AppCompatTextView)
+                        boolTextViewNumberNameSwitch = if (boolTextViewNumberNameSwitch) {
+                            switchVisibility(it)
+                            false
+                        } else {
+                            switchVisibility(it)
+                            true
+                        }
+                }
+            }
+        }
+    }
+
+    private fun populateViews(player: List<PlayerModel>) {
+        var counter = 0
+        for (i in 0 until constraintlayout_lineup.childCount) {
+            val v = constraintlayout_lineup.getChildAt(i)
+            if (v is ConstraintLayout) {
+                var boolTextViewNumberNameSwitch = true
+                v.children.forEach {
+                    if (it is AppCompatTextView)
+                        boolTextViewNumberNameSwitch = if (boolTextViewNumberNameSwitch) {
+                            it.text = player[counter].number
+                            false
+                        } else {
+                            it.text = player[counter].name
+                            counter += 1
+                            if (counter == 11) {
+                                counter = 0
+                            }
+                            true
+                        }
+                }
+            }
+        }
+    }
+
+    private fun switchVisibility(it: AppCompatTextView) {
+        if (it.visibility == VISIBLE) {
+            it.visibility = GONE
+        } else
+            it.visibility = VISIBLE
+    }
 
     private fun toggleView() {
         for (i in formations) {
             i.visibility = GONE
         }
-
         formation_text.text = listOfFormations[selectedFormation].name
         formation.text = listOfFormations[selectedFormation].distribution
         formations[selectedFormation].visibility = VISIBLE
@@ -95,7 +155,7 @@ class SelectLineupActivity : AppCompatActivity() {
         this.startActivity(Intent(this, GameActivity::class.java).apply {
             putExtra("selectedTeam", intent.getParcelableExtra<TeamModel>("selectedTeam"))
             putExtra("selectedTeam2", intent.getParcelableExtra<TeamModel>("selectedTeam2"))
-            putExtra("highscore", intent.getIntExtra("highscore",0))
+            putExtra("highscore", intent.getIntExtra("highscore", 0))
         })
     }
 
@@ -120,10 +180,8 @@ class SelectLineupActivity : AppCompatActivity() {
             }
         }
     }
-
-    //First select Aufstellung
-    //Then select players(init highest rated players take place)
-    //TODO    Implement button that switches between playername -- number == position
+//First select Aufstellung
+//Then select players(init highest rated players take place)
 }
 
 

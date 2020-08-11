@@ -49,16 +49,18 @@ class GameActivity : AppCompatActivity() {
                 als strategie passen oder dribbeln, dann entscheidet sich mit was gerollt wird
                 anzahl der spieler umso mehr spieler umso besser verteidigung
 
-        TODO Intro screen T1 vs T2 Stars being calculated acc to players selected, also best player presented by overall
         TODO Progressbar of current gamestatus, like progressbar
-        TODO Add Settings paypal? generate UserID
+
+        TODO Bugfix:Invalid document reference. Document references must have an even number of segments, but mylist has 1
+        TODO Bugfix: SelectLineup hwne numbernameswitch adjust layout
+        TODO Intro screen T1 vs T2 Stars being calculated acc to players selected, also best player presented by overall
+        TODO Sidedrawer bei lineup und taktik view
 
         TODO -Animationen/Screens für actions
         TODO -Gamemodes (Create a Team_model, Online)
-        TODO Sidedrawer bei lineup und taktik view
-        TODO Bugfix:Invalid document reference. Document references must have an even number of segments, but mylist has 1
 
         Done:
+        Add Settings generate UserID
         -Firebase-Anbindung um Highscore zu speichern ✔ --> make it usefull compare data and write userBYid? oder google acc?
         ADD STATUS-Model Anst0ss ✔
         -Implementing Spielverlauf ✔

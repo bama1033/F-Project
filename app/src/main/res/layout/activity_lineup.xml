@@ -521,6 +521,17 @@
             app:layout_constraintEnd_toEndOf="@id/soccer_field"
             app:layout_constraintStart_toStartOf="@id/soccer_field" />
 
+    <ImageButton
+            android:id="@+id/interaction_one_lineup"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:background="@drawable/gradient_black_green"
+            android:padding="15dp"
+            app:layout_constraintBottom_toTopOf="@id/interaction_two_lineup"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:srcCompat="@drawable/ic_launcher_foreground" />
+
     <Button
             android:id="@+id/interaction_two_lineup"
             android:layout_width="0dp"
@@ -554,7 +565,6 @@
             android:id="@+id/formation_text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-
             android:fontFamily="@font/coming_soon"
             android:text="Standard"
             android:textAlignment="center"
