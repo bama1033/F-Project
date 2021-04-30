@@ -1,8 +1,8 @@
 package com.android.f_project.datamodel
 
 import android.os.Parcelable
-import com.android.f_project.GlobalVariable
-import com.android.f_project.getRandomInt
+import com.android.f_project.util.GlobalVariable
+import com.android.f_project.util.getRandomInt
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize

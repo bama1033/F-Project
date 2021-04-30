@@ -14,6 +14,7 @@ import com.android.f_project.R
 import com.android.f_project.datamodel.FormationModel
 import com.android.f_project.datamodel.PlayerModel
 import com.android.f_project.datamodel.TeamModel
+import com.android.f_project.util.OnSwipeTouchListener
 import kotlinx.android.synthetic.main.activity_lineup.*
 
 
@@ -157,6 +158,7 @@ class SelectLineupActivity : AppCompatActivity() {
             putExtra("selectedTeam2", intent.getParcelableExtra<TeamModel>("selectedTeam2"))
             putExtra("highscore", intent.getIntExtra("highscore", 0))
         })
+        finish()
     }
 
     private class MyTouchListener : OnTouchListener {

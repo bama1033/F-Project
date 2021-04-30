@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.f_project.generateAccountID
+import com.android.f_project.util.generateAccountID
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_main_menu.*
@@ -32,12 +32,14 @@ class MainMenuActivity : AppCompatActivity() {
             this.startActivity(Intent(this, SelectTeamActivity::class.java).apply {
                 putExtra("highscore", highestGoals)
             })
+            finish()
         }
         button_scores.setOnClickListener {
             showHighscore()
         }
         button_settings.setOnClickListener {
             this.startActivity(Intent(this, SettingsActivity::class.java))
+            finish()
         }
         button_quit.setOnClickListener {
             this.finishAffinity()
@@ -69,7 +71,10 @@ class MainMenuActivity : AppCompatActivity() {
 
     private fun addAccountId(sharedPref: SharedPreferences) {
         with(sharedPref.edit()) {
-            putString("AccountId", generateAccountID())
+            putString(
+                "AccountId",
+                generateAccountID()
+            )
             commit()
         }
     }

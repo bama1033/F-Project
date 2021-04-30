@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.f_project.R
-import com.android.f_project.checkPlausibleAccountId
+import com.android.f_project.util.checkPlausibleAccountId
 import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
@@ -25,7 +25,10 @@ class SettingsActivity : AppCompatActivity() {
                 if (AccountRestore_Textview.text.isNullOrEmpty())
                     longToast("Field is empty!")
                 else {
-                    if (checkPlausibleAccountId(AccountRestore_Textview.text.toString()))
+                    if (checkPlausibleAccountId(
+                            AccountRestore_Textview.text.toString()
+                        )
+                    )
                         replaceAccountID(sharedPref)
                     else {
                         longToast("Entered AccountId is not valid(8 letters long/only letters and number)")

@@ -12,11 +12,15 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.f_project.*
+import com.android.f_project.R
 import com.android.f_project.datamodel.PlayerModel
 import com.android.f_project.datamodel.SceneModel
 import com.android.f_project.datamodel.StatusModel
 import com.android.f_project.datamodel.TeamModel
+import com.android.f_project.util.ListAdapter
+import com.android.f_project.util.doesCalculation
+import com.android.f_project.util.getDefaultPlayer
+import com.android.f_project.util.shuffle
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.android.synthetic.main.activity_gamesimulation.*
@@ -41,9 +45,11 @@ class GameActivity : AppCompatActivity() {
     private lateinit var adapter: ListAdapter
     private lateinit var rv: RecyclerView
     private lateinit var mDocRef: DocumentReference
-    private var attackingPlayer: PlayerModel = getDefaultPlayer()
+    private var attackingPlayer: PlayerModel =
+        getDefaultPlayer()
 
 /*
+TODO make FAB that scrolls fot you down, or FAB that gives you options
         TODO MakeTeams interact (GK Def MFs,Atk und suche einen random pro Scene aus)
         TODO -Implementing Strategy
                 als strategie passen oder dribbeln, dann entscheidet sich mit was gerollt wird
@@ -118,8 +124,8 @@ class GameActivity : AppCompatActivity() {
     }
 
     private fun interactionOne() {
-        finish()
         this.startActivity(Intent(this, MainMenuActivity::class.java))
+        finish()
     }
 
     private fun interactionTwo() {
@@ -409,12 +415,6 @@ class GameActivity : AppCompatActivity() {
             this.runOnUiThread {
                 if (!gameOverToken) {
                     createScene()
-                    //Let's change background's color from blue to red.
-//                    val color = arrayOf(ColorDrawable(Color.WHITE), ColorDrawable(Color.RED))
-//                    val trans = TransitionDrawable(color)
-//                    //This will work also on old devices. The latest API says you have to use setBackground instead.
-//                    interaction_one.setBackgroundDrawable(trans)
-//                    trans.startTransition(5000)
                     delayMainStart(adapter, rv)
                 }
             }

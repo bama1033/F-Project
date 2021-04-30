@@ -1,4 +1,4 @@
-package com.android.f_project.activitys
+package com.android.f_project.util
 
 import android.util.Log
 import android.view.GestureDetector

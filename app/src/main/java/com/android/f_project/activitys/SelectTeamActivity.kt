@@ -5,10 +5,11 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
-import com.android.f_project.MyDbHelper
+import com.android.f_project.util.MyDbHelper
 import com.android.f_project.R
 import com.android.f_project.datamodel.PlayerModel
 import com.android.f_project.datamodel.TeamModel
+import com.android.f_project.util.OnSwipeTouchListener
 import kotlinx.android.synthetic.main.activity_select_team.*
 
 class SelectTeamActivity : AppCompatActivity() {
@@ -232,5 +233,6 @@ class SelectTeamActivity : AppCompatActivity() {
             putExtra("selectedTeam2", teams[teamCounter2])
             putExtra("highscore", intent.getIntExtra("highscore",0))
         })
+        finish()
     }
 }

@@ -1,4 +1,4 @@
-package com.android.f_project
+package com.android.f_project.util
 
 import android.util.Log
 import com.android.f_project.datamodel.PlayerModel
@@ -91,7 +91,10 @@ fun doesCalculation(
     statsTwo: String?,
     playerTwo: PlayerModel
 ): Boolean {
-    return statsBuilder(statsOne?.toDouble(), playerOne.overall?.toDouble()) >= statsBuilder(
+    return statsBuilder(
+        statsOne?.toDouble(),
+        playerOne.overall?.toDouble()
+    ) >= statsBuilder(
         statsTwo?.toDouble()!!, playerTwo.overall?.toDouble()
     )
 }

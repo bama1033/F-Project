@@ -1,4 +1,4 @@
-package com.android.f_project
+package com.android.f_project.util
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -8,7 +8,10 @@ import java.io.File
 import java.io.FileOutputStream
 
 class MyDbHelper(val context: Context) :
-    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    SQLiteOpenHelper(context,
+        DATABASE_NAME, null,
+        DATABASE_VERSION
+    ) {
 
     private val preferences: SharedPreferences = context.getSharedPreferences(
         "${context.packageName}.database_versions",
@@ -21,7 +24,10 @@ class MyDbHelper(val context: Context) :
 
     private fun writeDatabaseVersionInPreferences() {
         preferences.edit().apply {
-            putInt(DATABASE_NAME, DATABASE_VERSION)
+            putInt(
+                DATABASE_NAME,
+                DATABASE_VERSION
+            )
             apply()
         }
     }
