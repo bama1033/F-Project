@@ -5,22 +5,27 @@ import android.os.AsyncTask
 import android.os.Bundle
 import android.util.DisplayMetrics
 import androidx.appcompat.app.AppCompatActivity
-import com.android.f_project.util.MyDbHelper
+import androidx.core.app.NavUtils
 import com.android.f_project.R
+import com.android.f_project.databinding.ActivitySelectTeamBinding
 import com.android.f_project.datamodel.PlayerModel
 import com.android.f_project.datamodel.TeamModel
+import com.android.f_project.util.MyDbHelper
 import com.android.f_project.util.OnSwipeTouchListener
-import kotlinx.android.synthetic.main.activity_select_team.*
 
 class SelectTeamActivity : AppCompatActivity() {
 
     private val teams = ArrayList<TeamModel>()
     private var teamCounter: Int = 0
     private var teamCounter2: Int = 1
+    private lateinit var binding: ActivitySelectTeamBinding
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_select_team)
+        binding = ActivitySelectTeamBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
@@ -33,27 +38,27 @@ class SelectTeamActivity : AppCompatActivity() {
             populateView2(teams)
         }
 
-        previous_button_team.setOnClickListener {
+        binding.previousButtonTeam.setOnClickListener {
             previousTeam()
         }
 
-        next_button_team.setOnClickListener {
+        binding.nextButtonTeam.setOnClickListener {
             nextTeam()
         }
 
-        previous_button_team2.setOnClickListener {
+        binding.previousButtonTeam2.setOnClickListener {
             previousTeam2()
         }
 
-        next_button_team2.setOnClickListener {
+        binding.nextButtonTeam2.setOnClickListener {
             nextTeam2()
         }
 
-        select_button.setOnClickListener {
+        binding.selectButton.setOnClickListener {
             selectLineup()
         }
 
-        constraintlayout_selectteam.setOnTouchListener(object : OnSwipeTouchListener() {
+        binding.constraintlayoutSelectteam.setOnTouchListener(object : OnSwipeTouchListener() {
             override fun onSwipeLeft(y: Float) {
                 if (y >= halfHeight) {
                     nextTeam2()
@@ -215,24 +220,23 @@ class SelectTeamActivity : AppCompatActivity() {
 
     private fun populateView(teamList: ArrayList<TeamModel>) {
         val chosen = teamList[teamCounter]
-        team_name.text = chosen.name
-        league_name.text = chosen.league
-        chosen.logo_res?.let { team_logo.setImageResource(it) }
+        binding.teamName.text = chosen.name
+        binding.leagueName.text = chosen.league
+        chosen.logo_res?.let { binding.teamLogo.setImageResource(it) }
     }
 
     private fun populateView2(teamList: ArrayList<TeamModel>) {
         val chosen = teamList[teamCounter2]
-        team_name2.text = chosen.name
-        league_name2.text = chosen.league
-        chosen.logo_res?.let { team_logo2.setImageResource(it) }
+        binding.teamName2.text = chosen.name
+        binding.leagueName2.text = chosen.league
+        chosen.logo_res?.let { binding.teamLogo2.setImageResource(it) }
     }
 
     private fun selectLineup() {
         this.startActivity(Intent(this, SelectLineupActivity::class.java).apply {
             putExtra("selectedTeam", teams[teamCounter])
             putExtra("selectedTeam2", teams[teamCounter2])
-            putExtra("highscore", intent.getIntExtra("highscore",0))
+            putExtra("highscore", intent.getIntExtra("highscore", 0))
         })
-        finish()
     }
 }

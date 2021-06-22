@@ -9,14 +9,13 @@ import android.view.View.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.NavUtils
 import androidx.core.view.children
-import com.android.f_project.R
+import com.android.f_project.databinding.ActivityLineupBinding
 import com.android.f_project.datamodel.FormationModel
 import com.android.f_project.datamodel.PlayerModel
 import com.android.f_project.datamodel.TeamModel
 import com.android.f_project.util.OnSwipeTouchListener
-import kotlinx.android.synthetic.main.activity_lineup.*
-
 
 class SelectLineupActivity : AppCompatActivity() {
 
@@ -29,6 +28,7 @@ class SelectLineupActivity : AppCompatActivity() {
     private var formation3: FormationModel = FormationModel("3", "Balanced", "1-2-4-3")
     private lateinit var selectedTeamHome: TeamModel
     private var listOfFormations = mutableListOf(formation0, formation1, formation2, formation3)
+    private lateinit var binding: ActivityLineupBinding
     //    changeFormation(){
     //        1-2-3-4
     //        2-1-2-5
@@ -38,20 +38,23 @@ class SelectLineupActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_lineup)
+        binding = ActivityLineupBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
+
         selectedTeamHome = intent.getParcelableExtra("selectedTeam")
 
         val player = selectedTeamHome.players.take(11)
-        formations.add(group0)
-        formations.add(group1)
-        formations.add(group2)
-        formations.add(group3)
+        formations.add(binding.group0)
+        formations.add(binding.group1)
+        formations.add(binding.group2)
+        formations.add(binding.group3)
 
         toggleView()
 
         populateViews(player)
 
-        constraintlayout_lineup.setOnTouchListener(object : OnSwipeTouchListener() {
+        binding.constraintlayoutLineup.setOnTouchListener(object : OnSwipeTouchListener() {
             override fun onSwipeLeft(y: Float) {
                 nextFormation()
             }
@@ -60,24 +63,24 @@ class SelectLineupActivity : AppCompatActivity() {
                 previousFormation()
             }
         })
-        interaction_one_lineup.setOnClickListener {
+        binding.interactionOneLineup.setOnClickListener {
             swapNameNumber()
         }
 
-        interaction_two_lineup.setOnClickListener {
+        binding.interactionTwoLineup.setOnClickListener {
             startGame()
         }
 
-        previous_button_formation.setOnClickListener {
+        binding.previousButtonFormation.setOnClickListener {
             previousFormation()
         }
 
-        next_button_formation.setOnClickListener {
+        binding.nextButtonFormation.setOnClickListener {
             nextFormation()
         }
 
-        player_1.setOnTouchListener(MyTouchListener())
-        player_12.setOnTouchListener(MyTouchListener())
+//        binding.player1.setOnTouchListener(MyTouchListener())
+//        binding.player12.setOnTouchListener(MyTouchListener())
     }
 
     private fun previousFormation() {
@@ -94,8 +97,8 @@ class SelectLineupActivity : AppCompatActivity() {
     }
 
     private fun swapNameNumber() {
-        for (i in 0 until constraintlayout_lineup.childCount) {
-            val v = constraintlayout_lineup.getChildAt(i)
+        for (i in 0 until binding.constraintlayoutLineup.childCount) {
+            val v = binding.constraintlayoutLineup.getChildAt(i)
             if (v is ConstraintLayout) {
                 var boolTextViewNumberNameSwitch = true
                 v.children.forEach {
@@ -114,8 +117,8 @@ class SelectLineupActivity : AppCompatActivity() {
 
     private fun populateViews(player: List<PlayerModel>) {
         var counter = 0
-        for (i in 0 until constraintlayout_lineup.childCount) {
-            val v = constraintlayout_lineup.getChildAt(i)
+        for (i in 0 until binding.constraintlayoutLineup.childCount) {
+            val v = binding.constraintlayoutLineup.getChildAt(i)
             if (v is ConstraintLayout) {
                 var boolTextViewNumberNameSwitch = true
                 v.children.forEach {
@@ -147,13 +150,13 @@ class SelectLineupActivity : AppCompatActivity() {
         for (i in formations) {
             i.visibility = GONE
         }
-        formation_text.text = listOfFormations[selectedFormation].name
-        formation.text = listOfFormations[selectedFormation].distribution
+        binding.formationText.text = listOfFormations[selectedFormation].name
+        binding.formation.text = listOfFormations[selectedFormation].distribution
         formations[selectedFormation].visibility = VISIBLE
     }
 
     private fun startGame() {
-        this.startActivity(Intent(this, GameActivity::class.java).apply {
+        this.startActivity(Intent(this, SimGameActivity::class.java).apply {
             putExtra("selectedTeam", intent.getParcelableExtra<TeamModel>("selectedTeam"))
             putExtra("selectedTeam2", intent.getParcelableExtra<TeamModel>("selectedTeam2"))
             putExtra("highscore", intent.getIntExtra("highscore", 0))

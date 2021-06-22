@@ -5,28 +5,29 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.android.f_project.R
+import com.android.f_project.databinding.ActivitySettingsBinding
 import com.android.f_project.util.checkPlausibleAccountId
-import kotlinx.android.synthetic.main.activity_settings.*
 
 class SettingsActivity : AppCompatActivity() {
-    var clicked = false
+    private var clicked = false
+    private lateinit var binding: ActivitySettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         val sharedPref = this.getSharedPreferences("AccountId", Context.MODE_PRIVATE) ?: return
         val highScore = sharedPref.getString("AccountId", "ERROR")
+        binding.AccountTextview.setText(highScore)
 
-        Account_Textview.setText(highScore)
-
-        Restore_Button.setOnClickListener {
+        binding.RestoreButton.setOnClickListener {
             if (clicked) {
-                if (AccountRestore_Textview.text.isNullOrEmpty())
+                if (binding.AccountRestoreTextview.text.isNullOrEmpty())
                     longToast("Field is empty!")
                 else {
                     if (checkPlausibleAccountId(
-                            AccountRestore_Textview.text.toString()
+                            binding.AccountRestoreTextview.text.toString()
                         )
                     )
                         replaceAccountID(sharedPref)
@@ -51,9 +52,9 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun replaceAccountID(sharedPref: SharedPreferences) {
         with(sharedPref.edit()) {
-            putString("AccountId", AccountRestore_Textview.text.toString())
+            putString("AccountId", binding.AccountRestoreTextview.text.toString())
             commit()
         }
-        Account_Textview.text = AccountRestore_Textview.text
+        binding.AccountTextview.text = binding.AccountRestoreTextview.text
     }
 }

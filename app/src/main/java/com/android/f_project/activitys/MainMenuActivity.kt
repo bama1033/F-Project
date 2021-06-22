@@ -7,41 +7,41 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.android.f_project.databinding.ActivityMainMenuBinding
 import com.android.f_project.util.generateAccountID
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_main_menu.*
-
 
 class MainMenuActivity : AppCompatActivity() {
 
     private lateinit var mDocRef: DocumentReference
     private var accId: String = ""
-    var highestGoals: Int? = 0
+    private var highestGoals: Int? = 0
+    private lateinit var binding: ActivityMainMenuBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainMenuBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
-        setContentView(com.android.f_project.R.layout.activity_main_menu)
         val sharedPref = this.getSharedPreferences(
             "AccountId", Context.MODE_PRIVATE
         ) ?: return
         getAccount(sharedPref)
 
-        button_start.setOnClickListener {
+        binding.buttonStart.setOnClickListener {
             this.startActivity(Intent(this, SelectTeamActivity::class.java).apply {
                 putExtra("highscore", highestGoals)
             })
-            finish()
         }
-        button_scores.setOnClickListener {
+        binding.buttonScores.setOnClickListener {
             showHighscore()
         }
-        button_settings.setOnClickListener {
+        binding.buttonSettings.setOnClickListener {
             this.startActivity(Intent(this, SettingsActivity::class.java))
-            finish()
         }
-        button_quit.setOnClickListener {
+        binding.buttonQuit.setOnClickListener {
             this.finishAffinity()
         }
     }
@@ -88,7 +88,7 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        this.finishAffinity()
+        this.finish()
     }
 
     private fun showHighscore() {
@@ -106,7 +106,7 @@ class MainMenuActivity : AppCompatActivity() {
                 "Fetching Highscores...",
                 Toast.LENGTH_LONG
             ).show()
-            button_scores.isEnabled = false
+            binding.buttonScores.isEnabled = false
             mDocRef.get().addOnSuccessListener { result ->
                 if (result != null) {
                     Log.d("FirebaseManager", "Data: ${result.data}")
@@ -118,9 +118,9 @@ class MainMenuActivity : AppCompatActivity() {
                                 "${result.data?.get("AwayTeamCounter")}",
                         Toast.LENGTH_SHORT
                     ).show()
-                    button_scores.isEnabled = true
+                    binding.buttonScores.isEnabled = true
                 } else Toast.makeText(this, "You have no Highscore yet", Toast.LENGTH_SHORT).show()
-                button_scores.isEnabled = true
+                binding.buttonScores.isEnabled = true
             }
                 .addOnFailureListener { exception ->
                     Log.w("FirebaseManager", "Error getting documents.", exception)
@@ -129,7 +129,7 @@ class MainMenuActivity : AppCompatActivity() {
                         "Service currently disabled",
                         Toast.LENGTH_SHORT
                     ).show()
-                    button_scores.isEnabled = true
+                    binding.buttonScores.isEnabled = true
                 }
         }
     }

@@ -10,9 +10,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.f_project.R
+import com.android.f_project.databinding.ActivityGamesimulationBinding
 import com.android.f_project.datamodel.PlayerModel
 import com.android.f_project.datamodel.SceneModel
 import com.android.f_project.datamodel.StatusModel
@@ -23,14 +25,13 @@ import com.android.f_project.util.getDefaultPlayer
 import com.android.f_project.util.shuffle
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import kotlinx.android.synthetic.main.activity_gamesimulation.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
 
-class GameActivity : AppCompatActivity() {
+class SimGameActivity : AppCompatActivity() {
     private var scoreHome = 0
     private var scoreAway = 0
     private var gameTimer = 0
@@ -47,6 +48,7 @@ class GameActivity : AppCompatActivity() {
     private lateinit var mDocRef: DocumentReference
     private var attackingPlayer: PlayerModel =
         getDefaultPlayer()
+    private lateinit var binding: ActivityGamesimulationBinding
 
 /*
 TODO make FAB that scrolls fot you down, or FAB that gives you options
@@ -86,7 +88,9 @@ TODO make FAB that scrolls fot you down, or FAB that gives you options
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_gamesimulation)
+        binding = ActivityGamesimulationBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         selectedTeamHome = intent.getParcelableExtra("selectedTeam")
         selectedTeamAway = intent.getParcelableExtra("selectedTeam2")
@@ -98,11 +102,11 @@ TODO make FAB that scrolls fot you down, or FAB that gives you options
 
         adapter = ListAdapter(contentList)
 
-        interaction_one.setOnClickListener {
+        binding.interactionOne.setOnClickListener {
             //TODO init auf disabled setzen
             interactionOne()
         }
-        interaction_two.setOnClickListener {
+        binding.interactionTwo.setOnClickListener {
             interactionTwo()
         }
 
@@ -113,8 +117,12 @@ TODO make FAB that scrolls fot you down, or FAB that gives you options
         delayMainStart(adapter, rv)
     }
 
+    override fun onBackPressed() {
+        NavUtils.navigateUpFromSameTask(this)
+    }
+
     private fun animateClock() {
-        for (drawable in anima.compoundDrawables) {
+        for (drawable in binding.anima.compoundDrawables) {
             if (drawable is Animatable) {
                 (drawable as Animatable).stop()
                 (drawable as Animatable).start()
@@ -132,11 +140,11 @@ TODO make FAB that scrolls fot you down, or FAB that gives you options
         recreate()
     }
 
-    private fun setTeams(team_one: TeamModel, team_two: TeamModel) {
-        setViewText(team_home, team_one.name)
-        setViewText(team_away, team_two.name)
-        setImage(image_home, team_one.logo_res)
-        setImage(image_away, team_two.logo_res)
+    private fun setTeams(team_home: TeamModel, team_away: TeamModel) {
+        setViewText(binding.teamHome, team_home.name)
+        setViewText(binding.teamAway, team_away.name)
+        setImage(binding.imageHome, team_home.logo_res)
+        setImage(binding.imageAway, team_away.logo_res)
     }
 
     private fun setImage(view: ImageView, text: Int?) {
@@ -147,11 +155,11 @@ TODO make FAB that scrolls fot you down, or FAB that gives you options
         when (team) {
             "home" -> {
                 scoreHome += 1
-                setViewText(counter_home, scoreHome.toString())
+                setViewText(binding.counterHome, scoreHome.toString())
             }
             "away" -> {
                 scoreAway += 1
-                setViewText(counter_away, scoreAway.toString())
+                setViewText(binding.counterAway, scoreAway.toString())
             }
         }
     }
@@ -343,10 +351,10 @@ TODO make FAB that scrolls fot you down, or FAB that gives you options
 
     private fun updateTime() {
         if (gameTimer <= 90)
-            game_clock.text = gameTimer.toString()
+            binding.gameClock.text = gameTimer.toString()
         else {
             val newValue = convertNinetyPlusTime()
-            game_clock.text = "90+$newValue"
+            binding.gameClock.text = "90+$newValue"
         }
     }
 
@@ -356,7 +364,7 @@ TODO make FAB that scrolls fot you down, or FAB that gives you options
     }
 
     private fun startGame() {
-        game_clock.text = gameTimer.toString()
+        binding.gameClock.text = gameTimer.toString()
         addSceneSpecial(
             getString(
                 R.string.scene_beginning,
@@ -368,8 +376,8 @@ TODO make FAB that scrolls fot you down, or FAB that gives you options
 
     private fun endGame() {
         addSceneSpecial(getString(R.string.scene_ending))
-        interaction_one.visibility = View.VISIBLE
-        interaction_two.visibility = View.VISIBLE
+        binding.interactionOne.visibility = View.VISIBLE
+        binding.interactionTwo.visibility = View.VISIBLE
         updateAdapter()
         saveStats()
     }
@@ -384,9 +392,9 @@ TODO make FAB that scrolls fot you down, or FAB that gives you options
             val highScore = sharedPref.getString("AccountId", "ERROR")
             dataSave["User"] = highScore.toString()
             dataSave["Date"] = currentDate.toString()
-            dataSave["HomeTeamCounter"] = counter_home.text.toString()
+            dataSave["HomeTeamCounter"] = binding.counterHome.text.toString()
             dataSave["HomeTeam"] = selectedTeamHome.name.toString()
-            dataSave["AwayTeamCounter"] = counter_away.text.toString()
+            dataSave["AwayTeamCounter"] = binding.counterAway.text.toString()
             dataSave["AwayTeam"] = selectedTeamAway.name.toString()
             if (highScore == "ERROR") {
                 Log.d("FirebaseManager", "Problem mit der AccountId")

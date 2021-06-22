@@ -39,8 +39,8 @@
                 android:parentActivityName=".activitys.SelectTeamActivity"
                 android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name=".activitys.GameActivity"
-                android:parentActivityName=".activitys.SelectLineupActivity"
+                android:name=".activitys.SimGameActivity"
+                android:parentActivityName=".activitys.MainMenuActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
